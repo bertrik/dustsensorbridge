@@ -55,8 +55,8 @@ public final class SamenMetenBridge {
      */
     private SamenMetenBridge(ISamenMetenBridgeConfig config) {
         this.mqttListener = new MqttListener(this::handleSensorMessage, config.getMqttUrl(), config.getMqttTopic());
-        this.samenMetenUploader = new SamenMetenUploader(config.getInfluxUrl(), config.getInfluxDbName(),
-                config.getInfluxUsername(), config.getInfluxPassword());
+        this.samenMetenUploader = new SamenMetenUploader(config.getInfluxUrl(), config.getInfluxUsername(),
+                config.getInfluxPassword());
         this.sensorInfo = new SensorInfo(config.getSensorId(), config.getSensorLat(), config.getSensorLon());
         this.mapper = new ObjectMapper();
     }
@@ -77,19 +77,20 @@ public final class SamenMetenBridge {
     }
 
     /**
-     * Handles an incoming TTN message
+     * Handles an incoming MQTT message
      * 
      * @param topic the topic on which the message was received
      * @param textMessage the message contents
      */
     private void handleSensorMessage(String topic, String textMessage) {
         try {
-            // decode from JSON
+        	final Instant now = Instant.now();
+
+        	// decode from JSON
             final SensorMessage message = mapper.readValue(textMessage, SensorMessage.class);
-            final Instant now = Instant.now();
             
             // send payload telemetry data
-            samenMetenUploader.scheduleMeasurementUpload(sensorInfo, message, now);
+            samenMetenUploader.uploadMeasurement(sensorInfo, message, now);
         } catch (IOException e) {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
         }
@@ -101,10 +102,10 @@ public final class SamenMetenBridge {
      * @throws MqttException
      */
     private void stop() {
-        LOG.info("Stopping TTN HAB bridge application");
+        LOG.info("Stopping SamenMeten bridge application");
         mqttListener.stop();
         samenMetenUploader.stop();
-        LOG.info("Stopped TTN HAB bridge application");
+        LOG.info("Stopped SamenMeten bridge application");
     }
     
     /**

@@ -19,17 +19,16 @@ public final class SamenMetenBridgeConfig implements ISamenMetenBridgeConfig {
      * One enumeration item per configuration item.
      */
     private enum EConfigItem {
-        SENSOR_ID("sensor.id", "bla", "Uniek per leverancier"),
-        SENSOR_LAT("sensor.lat", "52.0", "Sensor latitude"),
-        SENSOR_LON("sensor.lon", "4.7", "Sensor longitude"),
+        SENSOR_ID("sensor.id", "pms7003", "Unique sensor id"),
+        SENSOR_LAT("sensor.lat", "52.02264", "Sensor latitude"),
+        SENSOR_LON("sensor.lon", "4.69260", "Sensor longitude"),
         
         MQTT_URL("mqtt.url", "tcp://aliensdetected.com", "URL of the MQTT server"),
         MQTT_TOPIC("mqtt.topic", "bertrik/pms7003/json", "The sensor MQTT topic"),
 
-        INFLUX_URL("influx.url", "", "URL of the influx server"),
-        INFLUX_USER("influx.user", "user", "User name of the influx server"),
-        INFLUX_PASS("influx.pass", "pass", "Password of the influx server"),
-        INFLUX_DBNAME("influx.dbname", "bertrik", "Influx database name"),
+        INFLUX_URL("influx.url", "http://influx.rivm.nl:8086", "URL of the influx server"),
+        INFLUX_USER("influx.user", "bsik", "User name for the influx server"),
+        INFLUX_PASS("influx.pass", "", "Password for the influx server")
         ;
         
         private final String key;
@@ -128,11 +127,6 @@ public final class SamenMetenBridgeConfig implements ISamenMetenBridgeConfig {
     @Override
     public String getInfluxPassword() {
         return props.get(EConfigItem.INFLUX_PASS);
-    }
-
-    @Override
-    public String getInfluxDbName() {
-        return props.get(EConfigItem.INFLUX_DBNAME);
     }
     
 }
