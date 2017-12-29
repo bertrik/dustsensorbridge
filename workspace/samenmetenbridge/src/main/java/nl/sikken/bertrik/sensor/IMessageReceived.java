@@ -1,7 +1,7 @@
 package nl.sikken.bertrik.sensor;
 
 /**
- * Interface of the callback from the TTN listener.
+ * Interface of the callback from the MQTT listener.
  */
 public interface IMessageReceived {
 

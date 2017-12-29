@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Representation of a message received from the TTN MQTT stream.
+ * Representation of a message received from the MQTT stream.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class SensorMessage {

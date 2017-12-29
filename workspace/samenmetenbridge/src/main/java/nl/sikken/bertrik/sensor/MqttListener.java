@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Listener process for receiving data from the TTN.
+ * Listener process for receiving data from MQTT.
  */
 public final class MqttListener {
     
@@ -76,7 +76,7 @@ public final class MqttListener {
      * Stops this module.
      */
     public void stop() {
-        LOG.info("Stopping TTN listener");
+        LOG.info("Stopping MQTT listener");
         try {
             mqttClient.disconnect(DISCONNECT_TIMEOUT_MS);
         } catch (MqttException e) {
@@ -90,7 +90,6 @@ public final class MqttListener {
                 LOG.warn("Caught exception on close: {}", e.getMessage());
             }
         }
-        LOG.info("Stopped TTN listener");
     }
     
 }
