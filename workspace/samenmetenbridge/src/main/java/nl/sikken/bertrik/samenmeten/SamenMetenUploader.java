@@ -69,12 +69,23 @@ public final class SamenMetenUploader {
 
 		BatchPoints batchPoints = BatchPoints.database(username).build();
         
+        // calculate timestamp
+		Instant timeStampTo = now;
+        if (timeStampFrom == null) {
+            // fake a timestamp from 1 second ago
+            timeStampFrom = now.minusSeconds(10);
+        }
+
         // create measurement point for PM10
         SensorPmTriplet pms = message.getAmb();
-        batchPoints.point(createPoint(info, now, "PM10", pms.getPm10().doubleValue()));
-        batchPoints.point(createPoint(info, now, "PM2.5", pms.getPm2_5().doubleValue()));
-        batchPoints.point(createPoint(info, now, "PM1", pms.getPm1_0().doubleValue()));
+        batchPoints.point(createPoint(info, timeStampFrom, timeStampTo, "PM10", pms.getPm10().doubleValue()));
+        batchPoints.point(createPoint(info, timeStampFrom, timeStampTo, "PM2.5", pms.getPm2_5().doubleValue()));
+        batchPoints.point(createPoint(info, timeStampFrom, timeStampTo, "PM1", pms.getPm1_0().doubleValue()));
 
+        // update last sent timestamp
+        timeStampFrom = Instant.from(now);
+        
+        // send it to influxdb
         try {
         	LOG.info("Writing {}", batchPoints);
         	influxDB.write(batchPoints);
@@ -83,20 +94,14 @@ public final class SamenMetenUploader {
         }
     }
     
-    private Point createPoint(SensorInfo info, Instant now, String pmType, double pmValue) {
+    private Point createPoint(SensorInfo info, Instant timeStampFrom, Instant timeStampTo, String pmType, double pmValue) {
         // create measurement point
         Point.Builder builder = Point.measurement("m_" + username);
         builder.tag("id", info.getId());
         builder.addField("lat", info.getLat()).addField("lon", info.getLon());
         
-        // add timestamp
-        if (timeStampFrom == null) {
-            // fake a timestamp from 1 second ago
-            timeStampFrom = now.minusSeconds(1);
-        }
         builder.addField("timestamp_from", timeStampFrom.toString());
-        builder.addField("timestamp_to", now.toString());
-        timeStampFrom = Instant.from(now);
+        builder.addField("timestamp_to", timeStampTo.toString());
         
         // add PM
         builder.addField(pmType, pmValue);
