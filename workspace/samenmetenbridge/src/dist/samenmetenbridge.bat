@@ -1,1 +1,1 @@
-bin\ttnhabbridge.bat
+bin\samenmetenbridge.bat
