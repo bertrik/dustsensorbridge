@@ -30,6 +30,7 @@ public final class MqttListener {
      * 
      * @param callback the interface for indicating a received message.
      * @param url the URL of the MQTT server
+     * @param topic the topic to listen to
      */
     public MqttListener(IMessageReceived callback, String url, String topic) {
         this.clientId = MqttClient.generateClientId();
