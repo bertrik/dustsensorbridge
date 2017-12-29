@@ -1,0 +1,24 @@
+/*
+ * Contains all external references and version used in the project. 
+ * It is not advised to use direct references in each sub-project buildscript for maintenance purposes. 
+ * Keeping the versions here allows us to control them for the entire solution
+ */
+
+ext {
+    libraries = [:]
+}
+
+libraries.slf4j = 'org.slf4j:slf4j-api:1.7.25'
+libraries.slf4jlog4j = 'org.slf4j:slf4j-log4j12:1.7.25'
+
+libraries.jackson = [
+    'org.glassfish.jersey.media:jersey-media-json-jackson:2.23.2'
+]
+
+libraries.mqtt_client = 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0' 
+libraries.influxdb_java = 'org.influxdb:influxdb-java:2.8'
+
+// test libraries
+libraries.junit = 'junit:junit:4.12'
+libraries.mockito = 'org.mockito:mockito-all:1.10.19'
+
