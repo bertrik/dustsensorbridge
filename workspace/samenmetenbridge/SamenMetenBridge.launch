@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/ttnhabbridge/src/main/java/nl/sikken/bertrik/TtnHabBridge.java"/>
+<listEntry value="/samenmetenbridge/src/main/java/nl/sikken/bertrik/SamenMetenBridge.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -10,6 +10,6 @@
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="nl.sikken.bertrik.TtnHabBridge"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ttnhabbridge"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="nl.sikken.bertrik.SamenMetenBridge"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="samenmetenbridge"/>
 </launchConfiguration>
