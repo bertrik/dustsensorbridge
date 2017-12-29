@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
@@ -84,7 +85,7 @@ public final class SamenMetenBridge {
      */
     private void handleSensorMessage(String topic, String textMessage) {
         try {
-        	final Instant now = Instant.now();
+        	final Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
 
         	// decode from JSON
             final SensorMessage message = mapper.readValue(textMessage, SensorMessage.class);
