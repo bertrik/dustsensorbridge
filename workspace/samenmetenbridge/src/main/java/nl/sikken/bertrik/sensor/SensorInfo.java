@@ -1,5 +1,7 @@
 package nl.sikken.bertrik.sensor;
 
+import java.util.Locale;
+
 /**
  * Represents static data of a sensor.
  */
@@ -32,6 +34,11 @@ public final class SensorInfo {
 
     public Double getLon() {
         return lon;
+    }
+    
+    @Override
+    public String toString() {
+    	return String.format(Locale.US, "{%s,%f,%f}", id, lat, lon);
     }
     
 }
