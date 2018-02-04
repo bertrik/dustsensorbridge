@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -36,6 +37,20 @@ public final class SensorMessageTest {
 		ObjectMapper mapper = new ObjectMapper();
 		SensorMessage sensorMessage = mapper.readValue(is, SensorMessage.class);
 		Assert.assertNotNull(sensorMessage);
+	}
+	
+	/**
+	 * Verifies serialization.
+	 * @throws JsonProcessingException 
+	 */
+	@Test
+	public void testSerialize() throws JsonProcessingException {
+		SensorPmTriplet pms = new SensorPmTriplet(10, 25, 100);
+		SensorBmeMessage bme = new SensorBmeMessage(14.0, 15.0, 1001.0);
+		SensorMessage message = new SensorMessage(pms, bme);
+		ObjectMapper mapper = new ObjectMapper();
+		String s = mapper.writeValueAsString(message);
+		Assert.assertNotNull(s);
 	}
 	
 }
