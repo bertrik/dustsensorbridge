@@ -11,11 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class SensorMessage {
 
-    @JsonProperty("cf1")
-    private SensorPmTriplet cf1;
+    @JsonProperty("pms7003")
+    private SensorPmTriplet pms;
     
-    @JsonProperty("amb")
-    private SensorPmTriplet amb;
+    @JsonProperty("bme280")
+    private SensorBmeMessage bme;
     
     private SensorMessage() {
         // Jackson constructor
@@ -24,26 +24,26 @@ public final class SensorMessage {
     /**
      * Constructor.
      * 
-     * @param cf1 cf=1 values
-     * @param amb amb values
+     * @param pms dust sensor values
+     * @param bme meteo sensor value
      */
-    public SensorMessage(SensorPmTriplet cf1, SensorPmTriplet amb) {
+    public SensorMessage(SensorPmTriplet pms, SensorBmeMessage bme) {
         this();
-        this.cf1 = cf1;
-        this.amb = amb;
+        this.pms = pms;
+        this.bme = bme;
     }
     
-    public SensorPmTriplet getCf1() {
-        return cf1;
+    public SensorPmTriplet getPms() {
+        return pms;
     }
 
-    public SensorPmTriplet getAmb() {
-        return amb;
+    public SensorBmeMessage getBme() {
+        return bme;
     }
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "{cf1=%s,amb=%s}", cf1, amb);
+        return String.format(Locale.US, "{pms=%s,bme=%s}", pms, bme);
     }
     
 }
