@@ -7,9 +7,11 @@ import org.influxdb.InfluxDBException;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
+import org.influxdb.dto.Point.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.sikken.bertrik.sensor.SensorBmeMessage;
 import nl.sikken.bertrik.sensor.SensorInfo;
 import nl.sikken.bertrik.sensor.SensorMessage;
 import nl.sikken.bertrik.sensor.SensorPmTriplet;
@@ -67,8 +69,6 @@ public final class SamenMetenUploader {
     public void uploadMeasurement(SensorInfo info, SensorMessage message, Instant now) {
         LOG.info("scheduleMeasurementUpload({}, {})", message, now);
 
-		BatchPoints batchPoints = BatchPoints.database(username).build();
-        
         // calculate timestamp
 		Instant timeStampTo = now;
         if (timeStampFrom == null) {
@@ -76,12 +76,28 @@ public final class SamenMetenUploader {
             timeStampFrom = now.minusSeconds(10);
         }
 
-        // create measurement point for PM10
-        SensorPmTriplet pms = message.getAmb();
-        batchPoints.point(createPoint(info, timeStampFrom, timeStampTo, "PM10", pms.getPm10().doubleValue()));
-        batchPoints.point(createPoint(info, timeStampFrom, timeStampTo, "PM2.5", pms.getPm2_5().doubleValue()));
-        batchPoints.point(createPoint(info, timeStampFrom, timeStampTo, "PM1", pms.getPm1_0().doubleValue()));
+        // create common measurement points builder
+        Builder builder = createPointBuilder(info, timeStampTo, timeStampTo);
+        
+        // add dust fields from PMS7003
+        SensorPmTriplet pms = message.getPms();
+        builder.addField("PM10", pms.getPm10().doubleValue());
+        builder.addField("PM2.5", pms.getPm2_5().doubleValue());
+        builder.addField("PM1", pms.getPm1_0().doubleValue());
+        builder.addField("PM-meetopstelling", "Plantower PMS7003");
+        
+        // add meteo fields from BME280
+        SensorBmeMessage bme = message.getBme();
+        builder.addField("T", bme.getTemp());
+        builder.addField("T-meetopstelling", "BME280");
+        builder.addField("RH", bme.getRh());
+        builder.addField("RH-meetopstelling", "BME280");
+        builder.addField("P", bme.getPressure());
+        builder.addField("P-meetopstelling", "BME280");
 
+		BatchPoints batchPoints = BatchPoints.database(username).build();
+		batchPoints.point(builder.build());
+        
         // update last sent timestamp
         timeStampFrom = Instant.from(now);
         
@@ -94,7 +110,15 @@ public final class SamenMetenUploader {
         }
     }
     
-    private Point createPoint(SensorInfo info, Instant timeStampFrom, Instant timeStampTo, String pmType, double pmValue) {
+    /**
+     * Creates a basic measurement point builder with default properties.
+     * 
+     * @param info static sensor info (e.g. latitude / longitude)
+     * @param timeStampFrom the timestamp from value
+     * @param timeStampTo the timestamp to value
+     * @return a measurement builder to which fields can be added
+     */
+    private Builder createPointBuilder(SensorInfo info, Instant timeStampFrom, Instant timeStampTo) {
         // create measurement point
         Point.Builder builder = Point.measurement("m_" + username);
         builder.tag("id", info.getId());
@@ -103,11 +127,7 @@ public final class SamenMetenUploader {
         builder.addField("timestamp_from", timeStampFrom.toString());
         builder.addField("timestamp_to", timeStampTo.toString());
         
-        // add PM
-        builder.addField(pmType, pmValue);
-        
-        Point point = builder.build();
-        return point;
+        return builder;
     }
 
 }
