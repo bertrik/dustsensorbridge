@@ -77,7 +77,7 @@ public final class SamenMetenUploader {
         }
 
         // create common measurement points builder
-        Builder builder = createPointBuilder(info, timeStampTo, timeStampTo);
+        Builder builder = createPointBuilder(info, timeStampFrom, timeStampTo);
         
         // add dust fields from PMS7003
         SensorPmTriplet pms = message.getPms();
