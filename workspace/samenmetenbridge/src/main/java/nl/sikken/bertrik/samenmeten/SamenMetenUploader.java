@@ -88,12 +88,18 @@ public final class SamenMetenUploader {
         
         // add meteo fields from BME280
         SensorBmeMessage bme = message.getBme();
-        builder.addField("T", bme.getTemp());
-        builder.addField("T-meetopstelling", "BME280");
-        builder.addField("RH", bme.getRh());
-        builder.addField("RH-meetopstelling", "BME280");
-        builder.addField("P", bme.getPressure());
-        builder.addField("P-meetopstelling", "BME280");
+        if (bme.hasValidTemp()) {
+	        builder.addField("T", bme.getTemp());
+	        builder.addField("T-meetopstelling", "BME280");
+        }
+        if (bme.hasValidRh()) {
+	        builder.addField("RH", bme.getRh());
+	        builder.addField("RH-meetopstelling", "BME280");
+        }
+        if (bme.hasValidPressure()) {
+	        builder.addField("P", bme.getPressure());
+	        builder.addField("P-meetopstelling", "BME280");
+        }
 
 		BatchPoints batchPoints = BatchPoints.database(username).build();
 		batchPoints.point(builder.build());

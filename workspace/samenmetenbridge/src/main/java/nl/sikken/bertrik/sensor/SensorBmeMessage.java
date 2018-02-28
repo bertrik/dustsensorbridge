@@ -44,6 +44,18 @@ public final class SensorBmeMessage {
 		return pressure;
 	}
 
+	public boolean hasValidTemp() {
+		return (temp > -100.0) && (temp < 100.0);
+	}
+
+	public boolean hasValidRh() {
+		return (rh >= 0) && (rh <= 100.0);
+	}
+
+	public boolean hasValidPressure() {
+		return (pressure > 800.0) && (pressure < 1200.0);
+	}
+
 	@Override
 	public String toString() {
 		return String.format(Locale.US, "{t=%f,rh=%f,p=%f}", temp, rh, pressure);
