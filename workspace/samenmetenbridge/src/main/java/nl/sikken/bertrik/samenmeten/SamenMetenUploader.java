@@ -48,7 +48,8 @@ public final class SamenMetenUploader {
      */
     public void start() {
         LOG.info("Starting SamenMeten Uploader");
-        this.influxDB = InfluxDBFactory.connect(url, username, password);
+        influxDB = InfluxDBFactory.connect(url, username, password);
+        influxDB.enableBatch();
     }
     
     /**
