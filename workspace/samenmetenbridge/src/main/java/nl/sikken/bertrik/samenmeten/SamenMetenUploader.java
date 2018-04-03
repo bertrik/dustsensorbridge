@@ -61,7 +61,6 @@ public final class SamenMetenUploader {
     /**
      * Uploads a sensor measurement.
      * 
-     * @param info the static sensor info
      * @param message the sensor measurement
      * @param now the current time
      */
