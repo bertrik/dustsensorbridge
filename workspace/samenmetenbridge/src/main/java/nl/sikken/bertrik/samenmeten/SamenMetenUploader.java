@@ -11,6 +11,7 @@ import org.influxdb.dto.Point.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.sikken.bertrik.ServerInfo;
 import nl.sikken.bertrik.sensor.SensorBmeMessage;
 import nl.sikken.bertrik.sensor.SensorInfo;
 import nl.sikken.bertrik.sensor.SensorMessage;
@@ -23,9 +24,8 @@ public final class SamenMetenUploader {
 
     private static final Logger LOG = LoggerFactory.getLogger(SamenMetenUploader.class);
     
-    private final String url;
-    private final String username;
-    private final String password;
+    private final ServerInfo serverInfo;
+    private final SensorInfo sensorInfo;
     
     private InfluxDB influxDB;
     private Instant timeStampFrom;
@@ -33,14 +33,12 @@ public final class SamenMetenUploader {
     /**
      * Constructor.
      * 
-     * @param url the URL of the influx db
-     * @param username the user name (same as database name)
-     * @param password the password
+     * @param serverInfo the upload server info
+     * @param sensorInfo the static sensor info
      */
-    public SamenMetenUploader(String url, String username, String password) {
-        this.url = url;
-        this.username = username;
-        this.password = password;
+    public SamenMetenUploader(ServerInfo serverInfo, SensorInfo sensorInfo) {
+    	this.serverInfo = serverInfo;
+    	this.sensorInfo = sensorInfo;
     }
     
     /**
@@ -48,7 +46,7 @@ public final class SamenMetenUploader {
      */
     public void start() {
         LOG.info("Starting SamenMeten Uploader");
-        influxDB = InfluxDBFactory.connect(url, username, password);
+		influxDB = InfluxDBFactory.connect(serverInfo.getUrl(), serverInfo.getUser(), serverInfo.getPass());
         influxDB.enableBatch();
     }
     
@@ -67,7 +65,7 @@ public final class SamenMetenUploader {
      * @param message the sensor measurement
      * @param now the current time
      */
-    public void uploadMeasurement(SensorInfo info, SensorMessage message, Instant now) {
+    public void uploadMeasurement(SensorMessage message, Instant now) {
         LOG.info("scheduleMeasurementUpload({}, {})", message, now);
 
         // calculate timestamp
@@ -78,7 +76,7 @@ public final class SamenMetenUploader {
         }
 
         // create common measurement points builder
-        Builder builder = createPointBuilder(info, timeStampFrom, timeStampTo);
+        Builder builder = createPointBuilder(sensorInfo, timeStampFrom, timeStampTo);
         
         // add dust fields from PMS7003
         SensorPmTriplet pms = message.getPms();
@@ -102,7 +100,7 @@ public final class SamenMetenUploader {
 	        builder.addField("P-meetopstelling", "BME280");
         }
 
-		BatchPoints batchPoints = BatchPoints.database(username).build();
+		BatchPoints batchPoints = BatchPoints.database(serverInfo.getUser()).build();
 		batchPoints.point(builder.build());
         
         // update last sent timestamp
@@ -127,7 +125,7 @@ public final class SamenMetenUploader {
      */
     private Builder createPointBuilder(SensorInfo info, Instant timeStampFrom, Instant timeStampTo) {
         // create measurement point
-        Point.Builder builder = Point.measurement("m_" + username);
+        Point.Builder builder = Point.measurement("m_" + serverInfo.getUser());
         builder.tag("id", info.getId());
         builder.addField("lat", info.getLat()).addField("lon", info.getLon());
         

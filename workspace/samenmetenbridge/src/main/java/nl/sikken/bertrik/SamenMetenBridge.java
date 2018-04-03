@@ -29,7 +29,6 @@ public final class SamenMetenBridge {
 
     private final MqttListener mqttListener;
     private final SamenMetenUploader samenMetenUploader;
-    private final SensorInfo sensorInfo;
     private final ObjectMapper mapper;
 
     /**
@@ -56,9 +55,14 @@ public final class SamenMetenBridge {
      */
     private SamenMetenBridge(ISamenMetenBridgeConfig config) {
         this.mqttListener = new MqttListener(this::handleSensorMessage, config.getMqttUrl(), config.getMqttTopic());
-        this.samenMetenUploader = new SamenMetenUploader(config.getInfluxUrl(), config.getInfluxUsername(),
-                config.getInfluxPassword());
-        this.sensorInfo = new SensorInfo(config.getSensorId(), config.getSensorLat(), config.getSensorLon());
+        
+        // general sensor info 
+        SensorInfo sensorInfo = new SensorInfo(config.getSensorId(), config.getSensorLat(), config.getSensorLon());
+        
+        // samenmeten
+		ServerInfo samenMetenInfo = new ServerInfo(config.getInfluxUrl(), config.getInfluxUsername(),
+				config.getInfluxPassword());
+        this.samenMetenUploader = new SamenMetenUploader(samenMetenInfo, sensorInfo);
         this.mapper = new ObjectMapper();
     }
 
@@ -91,7 +95,7 @@ public final class SamenMetenBridge {
             final SensorMessage message = mapper.readValue(textMessage, SensorMessage.class);
             
             // send payload telemetry data
-            samenMetenUploader.uploadMeasurement(sensorInfo, message, now);
+            samenMetenUploader.uploadMeasurement(message, now);
         } catch (IOException e) {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
         }
