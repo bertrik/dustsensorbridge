@@ -7,25 +7,18 @@ import java.util.Locale;
  */
 public final class SensorInfo {
 
-    private final String id;
     private final Double lat;
     private final Double lon;
 
     /**
      * Constructor.
      * 
-     * @param id the unique sensor id
      * @param lat the latitude (decimal degrees WGS84)
      * @param lon the longitude (decimal degrees WGS84)
      */
-    public SensorInfo(String id, Double lat, Double lon) {
-        this.id = id;
+    public SensorInfo(Double lat, Double lon) {
         this.lat = lat;
         this.lon = lon;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public Double getLat() {
@@ -38,7 +31,7 @@ public final class SensorInfo {
     
     @Override
     public String toString() {
-    	return String.format(Locale.US, "{%s,%f,%f}", id, lat, lon);
+    	return String.format(Locale.US, "{%f,%f}", lat, lon);
     }
     
 }

@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
@@ -13,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import nl.sikken.bertrik.luftdaten.ILuftDatenApi;
+import nl.sikken.bertrik.luftdaten.LuftDatenUploader;
 import nl.sikken.bertrik.samenmeten.SamenMetenUploader;
 import nl.sikken.bertrik.sensor.MqttListener;
 import nl.sikken.bertrik.sensor.SensorInfo;
@@ -27,9 +31,9 @@ public final class SamenMetenBridge {
     private static final Logger LOG = LoggerFactory.getLogger(SamenMetenBridge.class);
     private static final String CONFIG_FILE = "samenmetenbridge.properties";
 
+    private final ObjectMapper mapper = new ObjectMapper();
     private final MqttListener mqttListener;
-    private final SamenMetenUploader samenMetenUploader;
-    private final ObjectMapper mapper;
+    private final List<IUploader> uploaders = new ArrayList<>();
 
     /**
      * Main application entry point.
@@ -57,13 +61,25 @@ public final class SamenMetenBridge {
         this.mqttListener = new MqttListener(this::handleSensorMessage, config.getMqttUrl(), config.getMqttTopic());
         
         // general sensor info 
-        SensorInfo sensorInfo = new SensorInfo(config.getSensorId(), config.getSensorLat(), config.getSensorLon());
+        SensorInfo sensorInfo = new SensorInfo(config.getSensorLat(), config.getSensorLon());
         
-        // samenmeten
-		ServerInfo samenMetenInfo = new ServerInfo(config.getInfluxUrl(), config.getInfluxUsername(),
-				config.getInfluxPassword());
-        this.samenMetenUploader = new SamenMetenUploader(samenMetenInfo, sensorInfo);
-        this.mapper = new ObjectMapper();
+        // samenmeten.net
+        if (!config.getSamenMetenUrl().isEmpty()) {
+        	LOG.info("Adding SamenMeten uploader");
+			ServerInfo samenMetenInfo = new ServerInfo(config.getSamenMetenUrl(), config.getSamenMetenUsername(),
+					config.getSamenMetenPassword(), config.getSamenMetenId());
+	        IUploader samenMetenUploader = new SamenMetenUploader(samenMetenInfo, sensorInfo);
+	        uploaders.add(samenMetenUploader);
+        }
+        
+        // luftdaten.info
+        if (!config.getLuftDatenUrl().isEmpty()) {
+        	LOG.info("Adding Luftdaten uploader");
+	        ILuftDatenApi luftDatenApi = LuftDatenUploader.newRestClient(config.getLuftDatenUrl(), 
+	        		config.getLuftDatenTimeout(), config.getLuftDatenId());
+	        IUploader luftDatenUploader = new LuftDatenUploader(luftDatenApi, config.getLuftDatenVersion());
+	        uploaders.add(luftDatenUploader);
+        }
     }
 
     /**
@@ -75,13 +91,27 @@ public final class SamenMetenBridge {
         LOG.info("Starting SamenMeten bridge application");
 
         // start sub-modules
-        samenMetenUploader.start();
+        uploaders.forEach(u -> u.start());
         mqttListener.start();
 
         LOG.info("Started SamenMeten bridge application");
     }
 
     /**
+	 * Stops the application.
+	 * 
+	 * @throws MqttException
+	 */
+	private void stop() {
+	    LOG.info("Stopping SamenMeten bridge application");
+
+	    mqttListener.stop();
+        uploaders.forEach(u -> u.stop());
+
+	    LOG.info("Stopped SamenMeten bridge application");
+	}
+
+	/**
      * Handles an incoming MQTT message
      * 
      * @param topic the topic on which the message was received
@@ -95,24 +125,14 @@ public final class SamenMetenBridge {
             final SensorMessage message = mapper.readValue(textMessage, SensorMessage.class);
             
             // send payload telemetry data
-            samenMetenUploader.uploadMeasurement(message, now);
+            for (IUploader uploader : uploaders) {
+            	uploader.uploadMeasurement(now, message);
+            }
         } catch (IOException e) {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
         }
     }
 
-    /**
-     * Stops the application.
-     * 
-     * @throws MqttException
-     */
-    private void stop() {
-        LOG.info("Stopping SamenMeten bridge application");
-        mqttListener.stop();
-        samenMetenUploader.stop();
-        LOG.info("Stopped SamenMeten bridge application");
-    }
-    
     /**
      * Handles uncaught exceptions: log it and stop the application.
      * 

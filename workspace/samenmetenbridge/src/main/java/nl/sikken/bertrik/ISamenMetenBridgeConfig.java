@@ -6,11 +6,6 @@ package nl.sikken.bertrik;
 public interface ISamenMetenBridgeConfig {
 
     /**
-     * @return the unique sensor id
-     */
-    String getSensorId();
-    
-    /**
      * @return the sensor latitude
      */
     Double getSensorLat();
@@ -31,18 +26,28 @@ public interface ISamenMetenBridgeConfig {
     String getMqttTopic();
     
     /**
-     * @return URL of the influx db
+     * @return URL of the samenmeten db
      */
-    String getInfluxUrl();
+    String getSamenMetenUrl();
     
     /**
-     * @return user name for the influx db
+     * @return the samenmeten id
      */
-    String getInfluxUsername();
+    String getSamenMetenId();
+    
+    /**
+     * @return user name for the samenmeten db
+     */
+    String getSamenMetenUsername();
 
     /**
-     * @return password for the influx db
+     * @return password for the samenmeten db
      */
-    String getInfluxPassword();
+    String getSamenMetenPassword();
+
+	String getLuftDatenUrl();
+	int getLuftDatenTimeout();
+	String getLuftDatenId();
+	String getLuftDatenVersion();
 
 }

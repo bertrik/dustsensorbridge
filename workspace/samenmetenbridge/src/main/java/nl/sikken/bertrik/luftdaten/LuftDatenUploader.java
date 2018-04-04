@@ -17,6 +17,7 @@ import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.sikken.bertrik.IUploader;
 import nl.sikken.bertrik.luftdaten.dto.LuftDatenItem;
 import nl.sikken.bertrik.luftdaten.dto.LuftDatenMessage;
 import nl.sikken.bertrik.sensor.SensorMessage;
@@ -24,7 +25,7 @@ import nl.sikken.bertrik.sensor.SensorMessage;
 /**
  * Uploader for luftdaten.info
  */
-public final class LuftDatenUploader {
+public final class LuftDatenUploader implements IUploader {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(LuftDatenUploader.class);
 	
@@ -62,11 +63,10 @@ public final class LuftDatenUploader {
 
     /**
      * Uploads a measurement message.
-     * 
-     * @param message the message
      * @param now the current time
+     * @param message the message
      */
-    public void uploadMeasurement(SensorMessage message, Instant now) {
+    public void uploadMeasurement(Instant now, SensorMessage message) {
     	LuftDatenMessage luftDatenMessage = new LuftDatenMessage(softwareVersion);
     	luftDatenMessage.addItem(new LuftDatenItem("P1", (double)message.getPms().getPm10()));
     	luftDatenMessage.addItem(new LuftDatenItem("P2", (double)message.getPms().getPm2_5()));
@@ -76,5 +76,15 @@ public final class LuftDatenUploader {
     		LOG.warn("Caught {}", e.getMessage());
     	}
     }
+
+	@Override
+	public void start() {
+		LOG.info("Starting LuftDaten.info uploader");
+	}
+
+	@Override
+	public void stop() {
+		LOG.info("Stopping LuftDaten.info uploader");
+	}
 	
 }

@@ -19,16 +19,21 @@ public final class SamenMetenBridgeConfig implements ISamenMetenBridgeConfig {
      * One enumeration item per configuration item.
      */
     private enum EConfigItem {
-        SENSOR_ID("sensor.id", "pms7003", "Unique sensor id"),
         SENSOR_LAT("sensor.lat", "52.02264", "Sensor latitude"),
         SENSOR_LON("sensor.lon", "4.69260", "Sensor longitude"),
         
         MQTT_URL("mqtt.url", "tcp://aliensdetected.com", "URL of the MQTT server"),
         MQTT_TOPIC("mqtt.topic", "bertrik/pms7003/json", "The sensor MQTT topic"),
 
-        INFLUX_URL("influx.url", "http://influx.rivm.nl:8086", "URL of the influx server"),
-        INFLUX_USER("influx.user", "bsik", "User name for the influx server"),
-        INFLUX_PASS("influx.pass", "", "Password for the influx server")
+        SAMENMETEN_URL("samenmeten.url", "http://influx.rivm.nl:8086", "samenmeten server URL (empty to disable)"),
+        SAMENMETEN_ID("samenmeten.id", "pms7003", "Unique samenmeten sensor id"),
+        SAMENMETEN_USER("samenmeten.user", "bsik", "User name for the samenmeten server"),
+        SAMENMETEN_PASS("samenmeten.pass", "", "Password for the samenmeten server"),
+        
+        LUFTDATEN_URL("luftdaten.url", "https://api.luftdaten.info", "luftdaten server URL (empty to disable)"),
+        LUFTDATEN_ID("luftdaten.id", "esp8266-xxxxxx", "luftdaten sensor id"),
+        LUFTDATEN_TIMEOUT("luftdaten.timeout", "3000", "luftdaten timeout"),
+        LUFTDATEN_VERSION("luftdaten.version", "0.1", "luftdaten uploader version")
         ;
         
         private final String key;
@@ -90,11 +95,6 @@ public final class SamenMetenBridgeConfig implements ISamenMetenBridgeConfig {
     }
 
     @Override
-    public String getSensorId() {
-        return props.get(EConfigItem.SENSOR_ID);
-    }
-
-    @Override
     public Double getSensorLat() {
         return Double.valueOf(props.get(EConfigItem.SENSOR_LAT));
     }
@@ -115,18 +115,43 @@ public final class SamenMetenBridgeConfig implements ISamenMetenBridgeConfig {
     }
 
     @Override
-    public String getInfluxUrl() {
-        return props.get(EConfigItem.INFLUX_URL);
+	public String getSamenMetenId() {
+	    return props.get(EConfigItem.SAMENMETEN_ID);
+	}
+
+	@Override
+    public String getSamenMetenUrl() {
+        return props.get(EConfigItem.SAMENMETEN_URL).trim();
     }
 
     @Override
-    public String getInfluxUsername() {
-        return props.get(EConfigItem.INFLUX_USER);
+    public String getSamenMetenUsername() {
+        return props.get(EConfigItem.SAMENMETEN_USER);
     }
 
     @Override
-    public String getInfluxPassword() {
-        return props.get(EConfigItem.INFLUX_PASS);
+    public String getSamenMetenPassword() {
+        return props.get(EConfigItem.SAMENMETEN_PASS);
     }
+
+	@Override
+	public String getLuftDatenUrl() {
+        return props.get(EConfigItem.LUFTDATEN_URL).trim();
+	}
+
+	@Override
+	public int getLuftDatenTimeout() {
+		return Integer.valueOf(props.get(EConfigItem.LUFTDATEN_TIMEOUT));
+	}
+
+	@Override
+	public String getLuftDatenId() {
+		return props.get(EConfigItem.LUFTDATEN_ID);
+	}
+
+	@Override
+	public String getLuftDatenVersion() {
+		return props.get(EConfigItem.LUFTDATEN_VERSION);
+	}
     
 }

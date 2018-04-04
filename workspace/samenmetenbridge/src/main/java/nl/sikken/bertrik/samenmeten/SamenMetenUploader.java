@@ -11,6 +11,7 @@ import org.influxdb.dto.Point.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.sikken.bertrik.IUploader;
 import nl.sikken.bertrik.ServerInfo;
 import nl.sikken.bertrik.sensor.SensorBmeMessage;
 import nl.sikken.bertrik.sensor.SensorInfo;
@@ -20,7 +21,7 @@ import nl.sikken.bertrik.sensor.SensorPmTriplet;
 /**
  * Uploader towards samenmeten server.
  */
-public final class SamenMetenUploader {
+public final class SamenMetenUploader implements IUploader {
 
     private static final Logger LOG = LoggerFactory.getLogger(SamenMetenUploader.class);
     
@@ -41,30 +42,30 @@ public final class SamenMetenUploader {
     	this.sensorInfo = sensorInfo;
     }
     
-    /**
-     * Starts this sub-module.
-     */
-    public void start() {
+    /* (non-Javadoc)
+	 * @see nl.sikken.bertrik.samenmeten.IUploader#start()
+	 */
+	@Override
+	public void start() {
         LOG.info("Starting SamenMeten Uploader");
 		influxDB = InfluxDBFactory.connect(serverInfo.getUrl(), serverInfo.getUser(), serverInfo.getPass());
         influxDB.enableBatch();
     }
     
-    /**
-     * Stops this sub-module.
-     */
-    public void stop() {
+    /* (non-Javadoc)
+	 * @see nl.sikken.bertrik.samenmeten.IUploader#stop()
+	 */
+	@Override
+	public void stop() {
         LOG.info("Stopping SamenMeten Uploader");
         influxDB.close();
     }
 
-    /**
-     * Uploads a sensor measurement.
-     * 
-     * @param message the sensor measurement
-     * @param now the current time
-     */
-    public void uploadMeasurement(SensorMessage message, Instant now) {
+    /* (non-Javadoc)
+	 * @see nl.sikken.bertrik.samenmeten.IUploader#uploadMeasurement(nl.sikken.bertrik.sensor.SensorMessage, java.time.Instant)
+	 */
+	@Override
+	public void uploadMeasurement(Instant now, SensorMessage message) {
         LOG.info("scheduleMeasurementUpload({}, {})", message, now);
 
         // calculate timestamp
@@ -125,7 +126,7 @@ public final class SamenMetenUploader {
     private Builder createPointBuilder(SensorInfo info, Instant timeStampFrom, Instant timeStampTo) {
         // create measurement point
         Point.Builder builder = Point.measurement("m_" + serverInfo.getUser());
-        builder.tag("id", info.getId());
+        builder.tag("id", serverInfo.getId());
         builder.addField("lat", info.getLat()).addField("lon", info.getLon());
         
         builder.addField("timestamp_from", timeStampFrom.toString());
