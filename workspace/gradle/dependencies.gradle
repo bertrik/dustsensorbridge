@@ -12,6 +12,7 @@ libraries.jackson = [
 libraries.jersey_client = [
     'org.glassfish.jersey.core:jersey-client:2.26',
     'org.glassfish.jersey.ext:jersey-proxy-client:2.26',
+    'org.glassfish.jersey.inject:jersey-hk2:2.26'
 ]
 
 libraries.jersey_media_json_jackson = [
