@@ -34,7 +34,7 @@ public final class LuftDatenMessageTest {
 
 		Assert.assertEquals(msg.getSoftwareVersion(), decoded.getSoftwareVersion());
 		Assert.assertEquals(msg.getItems().get(0).getName(), decoded.getItems().get(0).getName());
-		Assert.assertEquals(msg.getItems().get(0).getValue(), decoded.getItems().get(0).getValue(), 0.01);
+		Assert.assertEquals(msg.getItems().get(0).getValue(), decoded.getItems().get(0).getValue());
 	}
 	
 }
