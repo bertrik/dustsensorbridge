@@ -17,6 +17,9 @@ import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import nl.sikken.bertrik.IUploader;
 import nl.sikken.bertrik.luftdaten.dto.LuftDatenItem;
 import nl.sikken.bertrik.luftdaten.dto.LuftDatenMessage;
@@ -29,6 +32,7 @@ public final class LuftDatenUploader implements IUploader {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(LuftDatenUploader.class);
 	
+	private final ObjectMapper mapper = new ObjectMapper();
 	private final ILuftDatenApi restClient;
 	private final String softwareVersion;
 
@@ -57,6 +61,7 @@ public final class LuftDatenUploader implements IUploader {
 		Map<String, Object> headers = new HashMap<>();
 		headers.put("X-Pin", "1");
 		headers.put("X-Sensor", id);
+		LOG.info("Creating new REST client with headers {}", headers);
 		return WebResourceFactory.newResource(ILuftDatenApi.class, target, false,
 				new MultivaluedHashMap<String, Object>(headers), Collections.<Cookie> emptyList(), new Form());
 	}
@@ -71,8 +76,9 @@ public final class LuftDatenUploader implements IUploader {
     	luftDatenMessage.addItem(new LuftDatenItem("P1", (double)message.getPms().getPm10()));
     	luftDatenMessage.addItem(new LuftDatenItem("P2", (double)message.getPms().getPm2_5()));
     	try {
+    		LOG.info("Sending luftdaten.info message '{}'", mapper.writeValueAsString(luftDatenMessage));
     		restClient.pushSensorData(luftDatenMessage);
-    	} catch (WebApplicationException e) {
+    	} catch (WebApplicationException | JsonProcessingException e) {
     		LOG.warn("Caught {}", e.getMessage());
     	}
     }
