@@ -34,7 +34,7 @@ public final class LuftDatenUploaderTest {
 		LuftDatenMessage actual = captor.getValue();
 		Assert.assertEquals("0.0", actual.getSoftwareVersion());
 		Assert.assertEquals("P1", actual.getItems().get(0).getName());
-		Assert.assertEquals(10.0, actual.getItems().get(0).getValue(), 0.01);
+		Assert.assertEquals("10.0", actual.getItems().get(0).getValue());
 	}
 
 }

@@ -12,7 +12,7 @@ public final class LuftDatenItem {
 	@JsonProperty("value_type")
 	private String name;
 	@JsonProperty("value")
-	private Double value;
+	private String value;
 	
 	private LuftDatenItem() {
 		// jackson constructor
@@ -27,14 +27,14 @@ public final class LuftDatenItem {
 	public LuftDatenItem(String name, Double value) {
 		this();
 		this.name = name;
-		this.value = value;
+		this.value = String.valueOf(value);
 	}
 	
 	public String getName() {
 		return name;
 	}
 
-	public Double getValue() {
+	public String getValue() {
 		return value;
 	}
 
