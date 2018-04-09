@@ -135,22 +135,22 @@ public final class SamenMetenBridgeConfig implements ISamenMetenBridgeConfig {
     }
 
 	@Override
-	public String getLuftDatenUrl() {
+	public String getLuftdatenUrl() {
         return props.get(EConfigItem.LUFTDATEN_URL).trim();
 	}
 
 	@Override
-	public int getLuftDatenTimeout() {
+	public int getLuftdatenTimeout() {
 		return Integer.valueOf(props.get(EConfigItem.LUFTDATEN_TIMEOUT));
 	}
 
 	@Override
-	public String getLuftDatenId() {
+	public String getLuftdatenId() {
 		return props.get(EConfigItem.LUFTDATEN_ID);
 	}
 
 	@Override
-	public String getLuftDatenVersion() {
+	public String getLuftdatenVersion() {
 		return props.get(EConfigItem.LUFTDATEN_VERSION);
 	}
     

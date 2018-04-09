@@ -7,14 +7,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * One luftdaten.info measurement item.
  */
-public final class LuftDatenItem {
+public final class LuftdatenItem {
 
 	@JsonProperty("value_type")
 	private String name;
 	@JsonProperty("value")
 	private String value;
 	
-	private LuftDatenItem() {
+	private LuftdatenItem() {
 		// jackson constructor
 	}
 	
@@ -24,7 +24,7 @@ public final class LuftDatenItem {
 	 * @param name the item name
 	 * @param value the item value
 	 */
-	public LuftDatenItem(String name, Double value) {
+	public LuftdatenItem(String name, Double value) {
 		this();
 		this.name = name;
 		this.value = String.valueOf(value);

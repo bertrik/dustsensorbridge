@@ -45,9 +45,9 @@ public interface ISamenMetenBridgeConfig {
      */
     String getSamenMetenPassword();
 
-	String getLuftDatenUrl();
-	int getLuftDatenTimeout();
-	String getLuftDatenId();
-	String getLuftDatenVersion();
+	String getLuftdatenUrl();
+	int getLuftdatenTimeout();
+	String getLuftdatenId();
+	String getLuftdatenVersion();
 
 }

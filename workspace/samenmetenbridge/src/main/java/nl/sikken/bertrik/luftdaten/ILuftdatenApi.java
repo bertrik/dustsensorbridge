@@ -6,7 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import nl.sikken.bertrik.luftdaten.dto.LuftDatenMessage;
+import nl.sikken.bertrik.luftdaten.dto.LuftdatenMessage;
 
 /**
  * REST API for luftdaten.info
@@ -14,10 +14,10 @@ import nl.sikken.bertrik.luftdaten.dto.LuftDatenMessage;
 @Path("/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface ILuftDatenApi {
+public interface ILuftdatenApi {
 
 	@Path("/push-sensor-data")
 	@POST
-	void pushSensorData(LuftDatenMessage message);
+	void pushSensorData(LuftdatenMessage message);
 	
 }

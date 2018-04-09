@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Unit test for LuftDatenMessage.
+ * Unit test for LuftdatenMessage.
  */
-public final class LuftDatenMessageTest {
+public final class LuftdatenMessageTest {
 
-	private static final Logger LOG = LoggerFactory.getLogger(LuftDatenMessageTest.class);
+	private static final Logger LOG = LoggerFactory.getLogger(LuftdatenMessageTest.class);
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 	
 	/**
@@ -24,13 +24,13 @@ public final class LuftDatenMessageTest {
 	@Test
 	public void testSerialize() throws IOException {
 		// serialize
-		LuftDatenMessage msg = new LuftDatenMessage("1.0");
-		msg.addItem(new LuftDatenItem("P1", 45.1));
+		LuftdatenMessage msg = new LuftdatenMessage("1.0");
+		msg.addItem(new LuftdatenItem("P1", 45.1));
 		String s = MAPPER.writeValueAsString(msg);
 		LOG.info("serialized: {}", s);
 
 		// decode
-		LuftDatenMessage decoded = MAPPER.readValue(s, LuftDatenMessage.class);
+		LuftdatenMessage decoded = MAPPER.readValue(s, LuftdatenMessage.class);
 
 		Assert.assertEquals(msg.getSoftwareVersion(), decoded.getSoftwareVersion());
 		Assert.assertEquals(msg.getItems().get(0).getName(), decoded.getItems().get(0).getName());

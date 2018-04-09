@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import nl.sikken.bertrik.luftdaten.ILuftDatenApi;
-import nl.sikken.bertrik.luftdaten.LuftDatenUploader;
+import nl.sikken.bertrik.luftdaten.ILuftdatenApi;
+import nl.sikken.bertrik.luftdaten.LuftdatenUploader;
 import nl.sikken.bertrik.samenmeten.SamenMetenUploader;
 import nl.sikken.bertrik.sensor.MqttListener;
 import nl.sikken.bertrik.sensor.SensorInfo;
@@ -73,11 +73,11 @@ public final class SamenMetenBridge {
         }
         
         // luftdaten.info
-        if (!config.getLuftDatenUrl().isEmpty()) {
+        if (!config.getLuftdatenUrl().isEmpty()) {
         	LOG.info("Adding Luftdaten uploader");
-	        ILuftDatenApi luftDatenApi = LuftDatenUploader.newRestClient(config.getLuftDatenUrl(), 
-	        		config.getLuftDatenTimeout(), config.getLuftDatenId());
-	        IUploader luftDatenUploader = new LuftDatenUploader(luftDatenApi, config.getLuftDatenVersion());
+	        ILuftdatenApi luftDatenApi = LuftdatenUploader.newRestClient(config.getLuftdatenUrl(), 
+	        		config.getLuftdatenTimeout(), config.getLuftdatenId());
+	        IUploader luftDatenUploader = new LuftdatenUploader(luftDatenApi, config.getLuftdatenVersion());
 	        uploaders.add(luftDatenUploader);
         }
     }

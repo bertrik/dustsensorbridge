@@ -8,17 +8,17 @@ import java.util.Locale;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * LuftDaten message as uploaded through a POST.
+ * Luftdaten message as uploaded through a POST.
  */
-public final class LuftDatenMessage {
+public final class LuftdatenMessage {
 	
 	@JsonProperty("software_version")
 	private String softwareVersion;
 	
 	@JsonProperty("sensordatavalues")
-	private final List<LuftDatenItem> items = new ArrayList<>();
+	private final List<LuftdatenItem> items = new ArrayList<>();
 	
-	private LuftDatenMessage() {
+	private LuftdatenMessage() {
 		// jackson constructor
 	}
 	
@@ -27,12 +27,12 @@ public final class LuftDatenMessage {
 	 * 
 	 * @param softwareVersion the software version
 	 */
-	public LuftDatenMessage(String softwareVersion) {
+	public LuftdatenMessage(String softwareVersion) {
 		this();
 		this.softwareVersion = softwareVersion;
 	}
 
-	public void addItem(LuftDatenItem item) {
+	public void addItem(LuftdatenItem item) {
 		items.add(item);
 	}
 
@@ -40,7 +40,7 @@ public final class LuftDatenMessage {
 		return softwareVersion;
 	}
 
-	public List<LuftDatenItem> getItems() {
+	public List<LuftdatenItem> getItems() {
 		return Collections.unmodifiableList(items);
 	}
 
