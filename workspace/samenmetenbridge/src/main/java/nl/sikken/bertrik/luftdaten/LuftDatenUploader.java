@@ -61,7 +61,7 @@ public final class LuftDatenUploader implements IUploader {
 		Map<String, Object> headers = new HashMap<>();
 		headers.put("X-Pin", "1");
 		headers.put("X-Sensor", id);
-		LOG.info("Creating new REST client with headers {}", headers);
+		LOG.info("Creating new REST client for URL '{}' with timeout {} and headers {}", url, timeout, headers);
 		return WebResourceFactory.newResource(ILuftDatenApi.class, target, false,
 				new MultivaluedHashMap<String, Object>(headers), Collections.<Cookie> emptyList(), new Form());
 	}
