@@ -77,7 +77,8 @@ public final class LuftdatenUploader implements IUploader {
     	luftDatenMessage.addItem(new LuftdatenItem("P2", (double)message.getPms().getPm2_5()));
     	try {
     		LOG.info("Sending luftdaten.info message '{}'", mapper.writeValueAsString(luftDatenMessage));
-    		restClient.pushSensorData(luftDatenMessage);
+    		String result = restClient.pushSensorData(luftDatenMessage);
+    		LOG.trace("Result: {}", result);
     	} catch (WebApplicationException | JsonProcessingException e) {
     		LOG.warn("Caught {}", e.getMessage());
     	}
