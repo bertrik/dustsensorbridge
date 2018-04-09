@@ -16,8 +16,8 @@ import nl.sikken.bertrik.luftdaten.dto.LuftdatenMessage;
 @Produces(MediaType.APPLICATION_JSON)
 public interface ILuftdatenApi {
 
-	@Path("/push-sensor-data")
+	@Path("/push-sensor-data/")
 	@POST
-	void pushSensorData(LuftdatenMessage message);
+	String pushSensorData(LuftdatenMessage message);
 	
 }
