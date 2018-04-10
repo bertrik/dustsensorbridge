@@ -22,14 +22,18 @@ To build under windows:
 Configuration options are stored in the file samenmetenbridge.properties
 
 It contains (at the moment of writing this), the following options:
-* sensor.id: the unique id of the sensor, part of the data written into the database
 * sensor.lat: the latitude of the sensor location in degrees, e.g. 52.02264
 * sensor.lon: the longitude of the sensor location in degrees, e.g. 4.69260
 * mqtt.url: the URL of the MQTT server, e.g. tcp://aliensdetected.com
 * mqtt.topic: the topic under which the data is published over MQTT
-* influx.url: the URL of the influx database, e.g. http://influx.rivm.nl:8086
-* influx.user: the influx database user name
-* influx.user: the influx database password
+* samenmeten.url: the URL of the samenmeten influx database, e.g. http://influx.rivm.nl:8086
+* samenmeten.id: the unique id of the sensor, part of the data written into the database
+* samenmeten.user: the samenmeten influx database user name
+* samenmeten.pass: the samenmeten influx database password
+* luftdaten.url: the URL of the luftdaten HTTP API, e.g. https://api.luftdaten.info
+* luftdaten.id: the unique id of the sensor, e.g. esp8266-123456
+* luftdaten.timeout: the timeout (ms) for accessing the luftdaten API, e.g 3000
+* luftdaten.version: the version string for accessing the luftdaten API, e.g. "0.1"
 
 # Running
 ## Linux
