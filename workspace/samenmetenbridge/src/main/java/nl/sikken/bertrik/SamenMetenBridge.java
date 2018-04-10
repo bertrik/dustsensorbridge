@@ -76,7 +76,7 @@ public final class SamenMetenBridge {
         if (!config.getLuftdatenUrl().isEmpty()) {
         	LOG.info("Adding Luftdaten uploader");
 	        ILuftdatenApi luftDatenApi = LuftdatenUploader.newRestClient(config.getLuftdatenUrl(), 
-	        		config.getLuftdatenTimeout(), config.getLuftdatenId());
+	        		config.getLuftdatenTimeout(), "1", config.getLuftdatenId());
 	        IUploader luftDatenUploader = new LuftdatenUploader(luftDatenApi, config.getLuftdatenVersion());
 	        uploaders.add(luftDatenUploader);
         }

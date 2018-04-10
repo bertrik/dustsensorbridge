@@ -55,14 +55,15 @@ public final class LuftdatenUploader implements IUploader {
 	 * 
 	 * @param url the URL of the server, e.g. "https://api.luftdaten.info"
 	 * @param timeout the timeout (ms)
-	 * @param id the sensor id
+	 * @param the value of the "X-Pin" header
+	 * @param id the value of the "X-Sensor" header
 	 * @return a new REST client.
 	 */
-	public static ILuftdatenApi newRestClient(String url, int timeout, String id) {
+	public static ILuftdatenApi newRestClient(String url, int timeout, String pin, String id) {
         final WebTarget target = ClientBuilder.newClient().property(ClientProperties.CONNECT_TIMEOUT, timeout)
                 .property(ClientProperties.READ_TIMEOUT, timeout).target(url);
 		Map<String, Object> headers = new HashMap<>();
-		headers.put("X-Pin", "1");
+		headers.put("X-Pin", pin);
 		headers.put("X-Sensor", id);
 		LOG.info("Creating new REST client for URL '{}' with timeout {} and headers {}", url, timeout, headers);
 		return WebResourceFactory.newResource(ILuftdatenApi.class, target, false,
