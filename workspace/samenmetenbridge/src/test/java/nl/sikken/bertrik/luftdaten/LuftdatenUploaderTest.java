@@ -22,14 +22,17 @@ public final class LuftdatenUploaderTest {
 	 */
 	@Test
 	public void testUpload() {
+		// create mock
 		ILuftdatenApi api = Mockito.mock(ILuftdatenApi.class);
+		Mockito.when(api.pushSensorData(Mockito.any())).thenReturn("201 OK");
 		LuftdatenUploader uploader = new LuftdatenUploader(api, "0.0");
+
 		SensorMessage message = 
 				new SensorMessage(new SensorPmTriplet(0.0, 2.5, 10.0), new SensorBmeMessage(0.0, 0, 1000.0));
 		uploader.uploadMeasurement(Instant.now(), message);
 		
 		ArgumentCaptor<LuftdatenMessage> captor = ArgumentCaptor.forClass(LuftdatenMessage.class);
-		Mockito.verify(api).pushSensorData(captor.capture());
+		Mockito.verify(api, Mockito.timeout(3000)).pushSensorData(captor.capture());
 		
 		LuftdatenMessage actual = captor.getValue();
 		Assert.assertEquals("0.0", actual.getSoftwareVersion());
