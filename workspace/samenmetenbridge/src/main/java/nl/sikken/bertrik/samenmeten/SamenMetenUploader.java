@@ -80,9 +80,9 @@ public final class SamenMetenUploader implements IUploader {
         
         // add dust fields from PMS7003
         SensorPmTriplet pms = message.getPms();
-        builder.addField("PM10", pms.getPm10().doubleValue());
-        builder.addField("PM2.5", pms.getPm2_5().doubleValue());
-        builder.addField("PM1", pms.getPm1_0().doubleValue());
+        builder.addField("PM10", pms.getPm10());
+        builder.addField("PM2.5", pms.getPm2_5());
+        builder.addField("PM1", pms.getPm1_0());
         builder.addField("PM-meetopstelling", "Plantower PMS7003");
         
         // add meteo fields from BME280

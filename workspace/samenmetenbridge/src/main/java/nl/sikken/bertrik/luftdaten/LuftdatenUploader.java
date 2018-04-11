@@ -72,8 +72,8 @@ public final class LuftdatenUploader implements IUploader {
      */
     public void uploadMeasurement(Instant now, SensorMessage message) {
     	LuftdatenMessage luftDatenMessage = new LuftdatenMessage(softwareVersion);
-    	luftDatenMessage.addItem(new LuftdatenItem("P1", (double)message.getPms().getPm10()));
-    	luftDatenMessage.addItem(new LuftdatenItem("P2", (double)message.getPms().getPm2_5()));
+    	luftDatenMessage.addItem(new LuftdatenItem("P1", message.getPms().getPm10()));
+    	luftDatenMessage.addItem(new LuftdatenItem("P2", message.getPms().getPm2_5()));
     	try {
     		LOG.info("Sending luftdaten.info message '{}'", mapper.writeValueAsString(luftDatenMessage));
     		String result = restClient.pushSensorData(luftDatenMessage);
