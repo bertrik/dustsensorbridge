@@ -20,7 +20,7 @@ public interface IUploader {
 	void stop();
 
 	/**
-	 * Schedules a sensor measurement for upload (should be non-blocking).
+	 * Uploads a sensor measurement.
 	 * 
 	 * @param now the current time
 	 * @param message the sensor measurement

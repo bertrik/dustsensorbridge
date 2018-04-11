@@ -4,8 +4,6 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
@@ -34,7 +32,6 @@ public final class LuftdatenUploader implements IUploader {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(LuftdatenUploader.class);
 	
-	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 	private final ObjectMapper mapper = new ObjectMapper();
 	private final ILuftdatenApi restClient;
 	private final String softwareVersion;
@@ -77,18 +74,9 @@ public final class LuftdatenUploader implements IUploader {
     	LuftdatenMessage luftDatenMessage = new LuftdatenMessage(softwareVersion);
     	luftDatenMessage.addItem(new LuftdatenItem("P1", (double)message.getPms().getPm10()));
     	luftDatenMessage.addItem(new LuftdatenItem("P2", (double)message.getPms().getPm2_5()));
-    	executor.submit(() -> doUpload(luftDatenMessage));
-    }
-    
-    /**
-     * Performs the actual upload in the background.
-     * 
-     * @param message the sensor message
-     */
-    private void doUpload(LuftdatenMessage message) {
     	try {
-    		LOG.info("Sending luftdaten.info message '{}'", mapper.writeValueAsString(message));
-    		String result = restClient.pushSensorData(message);
+    		LOG.info("Sending luftdaten.info message '{}'", mapper.writeValueAsString(luftDatenMessage));
+    		String result = restClient.pushSensorData(luftDatenMessage);
     		LOG.info("Result: {}", result);
     	} catch (WebApplicationException | JsonProcessingException e) {
     		LOG.warn("Caught exception '{}'", e.getMessage());
@@ -103,7 +91,6 @@ public final class LuftdatenUploader implements IUploader {
 	@Override
 	public void stop() {
 		LOG.info("Stopping Luftdaten.info uploader");
-		executor.shutdown();
 	}
 	
 }

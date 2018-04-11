@@ -1,8 +1,6 @@
 package nl.sikken.bertrik.samenmeten;
 
 import java.time.Instant;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBException;
@@ -26,8 +24,6 @@ import nl.sikken.bertrik.sensor.SensorPmTriplet;
 public final class SamenMetenUploader implements IUploader {
 
     private static final Logger LOG = LoggerFactory.getLogger(SamenMetenUploader.class);
-    
-    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     
     private final ServerInfo serverInfo;
     private final SensorInfo sensorInfo;
@@ -62,7 +58,6 @@ public final class SamenMetenUploader implements IUploader {
 	@Override
 	public void stop() {
         LOG.info("Stopping SamenMeten Uploader");
-        executor.shutdown();
         influxDB.close();
     }
 
@@ -71,7 +66,7 @@ public final class SamenMetenUploader implements IUploader {
 	 */
 	@Override
 	public void uploadMeasurement(Instant now, SensorMessage message) {
-        LOG.info("scheduleMeasurementUpload({}, {})", message, now);
+        LOG.info("uploadMeasurement({}, {})", message, now);
 
         // calculate timestamp
 		Instant timeStampTo = now;
@@ -111,17 +106,7 @@ public final class SamenMetenUploader implements IUploader {
         // update last sent timestamp
         timeStampFrom = Instant.from(now);
         
-        // perform the actual upload in the background
-        executor.submit(() -> doUpload(batchPoints));
-    }
-    
-	/**
-	 * Perform the actual upload in the background.
-	 * 
-	 * @param batchPoints the batch points to submit to influxdb.
-	 */
-	private void doUpload(BatchPoints batchPoints) {
-        // send it to influxdb
+        // perform the actual upload
         try {
         	LOG.info("Writing {}", batchPoints);
         	influxDB.write(batchPoints);
