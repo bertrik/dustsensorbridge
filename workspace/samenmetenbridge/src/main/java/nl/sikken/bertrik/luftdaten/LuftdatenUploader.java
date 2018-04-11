@@ -52,7 +52,7 @@ public final class LuftdatenUploader implements IUploader {
 	 * 
 	 * @param url the URL of the server, e.g. "https://api.luftdaten.info"
 	 * @param timeout the timeout (ms)
-	 * @param the value of the "X-Pin" header
+	 * @param pin the value of the "X-Pin" header
 	 * @param id the value of the "X-Sensor" header
 	 * @return a new REST client.
 	 */
