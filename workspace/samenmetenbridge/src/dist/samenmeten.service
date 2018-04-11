@@ -8,7 +8,7 @@ After=network.target
 
 [Service]
 WorkingDirectory=/home/bertrik/samenmetenbridge
-ExecStart=/home/bertrik/samenmetenbridge/samenmetenbridge.sh
+ExecStart=/home/bertrik/samenmetenbridge/bin/samenmetenbridge
 Type=simple
 KillMode=process
 Restart=on-failure
