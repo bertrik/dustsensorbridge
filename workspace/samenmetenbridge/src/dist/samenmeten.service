@@ -1,0 +1,20 @@
+# copy this to /etc/systemd/system
+# then sudo systemctl daemon-reload
+# and enable with sudo systemctl enable --now samenmeten
+
+[Unit]
+Description=samenmeten
+After=network.target
+
+[Service]
+WorkingDirectory=/home/bertrik/samenmetenbridge
+ExecStart=/home/bertrik/samenmetenbridge/samenmetenbridge.sh
+Type=simple
+KillMode=process
+Restart=on-failure
+RestartSec=10s
+TimeoutStopSec=15s
+User=bertrik
+
+[Install]
+WantedBy=multi-user.target
