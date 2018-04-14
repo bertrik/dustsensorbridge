@@ -66,7 +66,7 @@ public final class SamenMetenBridge {
         // general sensor info 
         SensorInfo sensorInfo = new SensorInfo(config.getSensorLat(), config.getSensorLon());
         
-        // samenmeten.net
+        // samenmeten
         if (!config.getSamenMetenUrl().isEmpty()) {
         	LOG.info("Adding SamenMeten uploader");
 			ServerInfo samenMetenInfo = new ServerInfo(config.getSamenMetenUrl(), config.getSamenMetenUsername(),
