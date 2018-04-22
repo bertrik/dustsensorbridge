@@ -1,4 +1,4 @@
-package nl.sikken.bertrik.sensor;
+package nl.sikken.bertrik.sensor.dto;
 
 import java.io.IOException;
 import java.io.InputStream;
