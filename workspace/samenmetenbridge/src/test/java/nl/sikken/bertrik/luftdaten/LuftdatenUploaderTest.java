@@ -8,9 +8,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import nl.sikken.bertrik.luftdaten.dto.LuftdatenMessage;
-import nl.sikken.bertrik.sensor.SensorBmeMessage;
-import nl.sikken.bertrik.sensor.SensorMessage;
-import nl.sikken.bertrik.sensor.SensorPmTriplet;
+import nl.sikken.bertrik.sensor.dto.SensorBmeMessage;
+import nl.sikken.bertrik.sensor.dto.SensorMessage;
+import nl.sikken.bertrik.sensor.dto.SensorPmTriplet;
 
 /**
  * Unit tests of LuftdatenUploader.

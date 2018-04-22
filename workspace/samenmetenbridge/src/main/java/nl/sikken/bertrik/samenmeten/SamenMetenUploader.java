@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import nl.sikken.bertrik.IUploader;
 import nl.sikken.bertrik.ServerInfo;
-import nl.sikken.bertrik.sensor.SensorBmeMessage;
 import nl.sikken.bertrik.sensor.SensorInfo;
-import nl.sikken.bertrik.sensor.SensorMessage;
-import nl.sikken.bertrik.sensor.SensorPmTriplet;
+import nl.sikken.bertrik.sensor.dto.SensorBmeMessage;
+import nl.sikken.bertrik.sensor.dto.SensorMessage;
+import nl.sikken.bertrik.sensor.dto.SensorPmTriplet;
 
 /**
  * Uploader towards samenmeten server.

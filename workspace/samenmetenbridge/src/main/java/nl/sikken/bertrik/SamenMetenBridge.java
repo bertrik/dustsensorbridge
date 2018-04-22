@@ -22,7 +22,7 @@ import nl.sikken.bertrik.luftdaten.LuftdatenUploader;
 import nl.sikken.bertrik.samenmeten.SamenMetenUploader;
 import nl.sikken.bertrik.sensor.MqttListener;
 import nl.sikken.bertrik.sensor.SensorInfo;
-import nl.sikken.bertrik.sensor.SensorMessage;
+import nl.sikken.bertrik.sensor.dto.SensorMessage;
 
 /**
  * Bridge between the-things-network and the habhub network.

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.sikken.bertrik.IUploader;
 import nl.sikken.bertrik.luftdaten.dto.LuftdatenItem;
 import nl.sikken.bertrik.luftdaten.dto.LuftdatenMessage;
-import nl.sikken.bertrik.sensor.SensorMessage;
+import nl.sikken.bertrik.sensor.dto.SensorMessage;
 
 /**
  * Uploader for luftdaten.info

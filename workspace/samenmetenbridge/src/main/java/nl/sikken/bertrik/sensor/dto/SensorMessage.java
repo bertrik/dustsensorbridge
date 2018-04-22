@@ -1,11 +1,9 @@
-package nl.sikken.bertrik.sensor;
+package nl.sikken.bertrik.sensor.dto;
 
 import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import nl.sikken.bertrik.sensor.dto.SensorSds;
 
 /**
  * Representation of a message received from the MQTT stream.

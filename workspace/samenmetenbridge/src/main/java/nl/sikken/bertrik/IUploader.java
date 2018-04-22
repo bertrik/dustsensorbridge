@@ -2,7 +2,7 @@ package nl.sikken.bertrik;
 
 import java.time.Instant;
 
-import nl.sikken.bertrik.sensor.SensorMessage;
+import nl.sikken.bertrik.sensor.dto.SensorMessage;
 
 /**
  * Uploader interface.
