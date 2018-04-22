@@ -8,9 +8,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import nl.sikken.bertrik.luftdaten.dto.LuftdatenMessage;
-import nl.sikken.bertrik.sensor.dto.SensorBmeMessage;
+import nl.sikken.bertrik.sensor.dto.SensorBme;
 import nl.sikken.bertrik.sensor.dto.SensorMessage;
-import nl.sikken.bertrik.sensor.dto.SensorPmTriplet;
+import nl.sikken.bertrik.sensor.dto.SensorPms;
 
 /**
  * Unit tests of LuftdatenUploader.
@@ -28,7 +28,7 @@ public final class LuftdatenUploaderTest {
 		LuftdatenUploader uploader = new LuftdatenUploader(api, "0.0");
 
 		SensorMessage message = 
-				new SensorMessage(new SensorPmTriplet(0.0, 2.5, 10.0), new SensorBmeMessage(0.0, 0, 1000.0));
+				new SensorMessage(new SensorPms(0.0, 2.5, 10.0), new SensorBme(0.0, 0, 1000.0));
 		uploader.uploadMeasurement(Instant.now(), message);
 		
 		ArgumentCaptor<LuftdatenMessage> captor = ArgumentCaptor.forClass(LuftdatenMessage.class);

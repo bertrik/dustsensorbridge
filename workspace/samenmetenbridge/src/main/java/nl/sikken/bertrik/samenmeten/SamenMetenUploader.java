@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import nl.sikken.bertrik.IUploader;
 import nl.sikken.bertrik.ServerInfo;
 import nl.sikken.bertrik.sensor.SensorInfo;
-import nl.sikken.bertrik.sensor.dto.SensorBmeMessage;
+import nl.sikken.bertrik.sensor.dto.SensorBme;
 import nl.sikken.bertrik.sensor.dto.SensorMessage;
-import nl.sikken.bertrik.sensor.dto.SensorPmTriplet;
+import nl.sikken.bertrik.sensor.dto.SensorPms;
 
 /**
  * Uploader towards samenmeten server.
@@ -79,14 +79,14 @@ public final class SamenMetenUploader implements IUploader {
         Builder builder = createPointBuilder(sensorInfo, timeStampFrom, timeStampTo);
         
         // add dust fields from PMS7003
-        SensorPmTriplet pms = message.getPms();
+        SensorPms pms = message.getPms();
         builder.addField("PM10", pms.getPm10());
         builder.addField("PM2.5", pms.getPm2_5());
         builder.addField("PM1", pms.getPm1_0());
         builder.addField("PM-meetopstelling", "Plantower PMS7003");
         
         // add meteo fields from BME280
-        SensorBmeMessage bme = message.getBme();
+        SensorBme bme = message.getBme();
         if (bme.hasValidTemp()) {
 	        builder.addField("T", bme.getTemp());
 	        builder.addField("T-meetopstelling", "BME280");

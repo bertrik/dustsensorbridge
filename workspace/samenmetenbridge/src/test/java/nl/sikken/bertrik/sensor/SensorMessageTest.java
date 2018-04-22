@@ -9,9 +9,9 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import nl.sikken.bertrik.sensor.dto.SensorBmeMessage;
+import nl.sikken.bertrik.sensor.dto.SensorBme;
 import nl.sikken.bertrik.sensor.dto.SensorMessage;
-import nl.sikken.bertrik.sensor.dto.SensorPmTriplet;
+import nl.sikken.bertrik.sensor.dto.SensorPms;
 
 /**
  * Unit test for SensorMessage.
@@ -23,8 +23,8 @@ public final class SensorMessageTest {
 	 */
 	@Test
 	public void testToString() {
-		SensorMessage message = new SensorMessage(new SensorPmTriplet(0.0, 1.0, 2.0),
-				new SensorBmeMessage(25.0, 50, 1018));
+		SensorMessage message = new SensorMessage(new SensorPms(0.0, 1.0, 2.0),
+				new SensorBme(25.0, 50, 1018));
 		String s = message.toString();
 		Assert.assertNotNull(s);
 	}
@@ -61,8 +61,8 @@ public final class SensorMessageTest {
 	 */
 	@Test
 	public void testSerialize() throws JsonProcessingException {
-		SensorPmTriplet pms = new SensorPmTriplet(1.0, 2.5, 10.0);
-		SensorBmeMessage bme = new SensorBmeMessage(14.0, 15.0, 1001.0);
+		SensorPms pms = new SensorPms(1.0, 2.5, 10.0);
+		SensorBme bme = new SensorBme(14.0, 15.0, 1001.0);
 		SensorMessage message = new SensorMessage(pms, bme);
 		ObjectMapper mapper = new ObjectMapper();
 		String s = mapper.writeValueAsString(message);

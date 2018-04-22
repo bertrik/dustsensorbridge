@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class SensorMessage {
 
     @JsonProperty("pms7003")
-    private SensorPmTriplet pms;
+    private SensorPms pms;
     
     @JsonProperty("SDS011")
     private SensorSds sds;
     
     @JsonProperty("bme280")
-    private SensorBmeMessage bme;
+    private SensorBme bme;
     
     private SensorMessage() {
         // Jackson constructor
@@ -30,13 +30,13 @@ public final class SensorMessage {
      * @param pms dust sensor values
      * @param bme meteo sensor value
      */
-    public SensorMessage(SensorPmTriplet pms, SensorBmeMessage bme) {
+    public SensorMessage(SensorPms pms, SensorBme bme) {
         this();
         this.pms = pms;
         this.bme = bme;
     }
     
-    public SensorPmTriplet getPms() {
+    public SensorPms getPms() {
         return pms;
     }
 
@@ -44,7 +44,7 @@ public final class SensorMessage {
     	return sds;
     }
     
-    public SensorBmeMessage getBme() {
+    public SensorBme getBme() {
         return bme;
     }
 

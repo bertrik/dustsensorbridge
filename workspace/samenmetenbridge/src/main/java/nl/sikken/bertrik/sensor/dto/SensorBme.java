@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Set of meteo sensor values from a BME280.
  */
-public final class SensorBmeMessage {
+public final class SensorBme {
 
 	@JsonProperty("t")
 	private double temp;
@@ -16,7 +16,7 @@ public final class SensorBmeMessage {
 	@JsonProperty("p")
 	private double pressure;
 
-	private SensorBmeMessage() {
+	private SensorBme() {
 		// jackson constructor
 	}
 	
@@ -25,7 +25,7 @@ public final class SensorBmeMessage {
 	 * @param rh relative humidity (percent)
 	 * @param pressure (mbar or hectopascal)
 	 */
-	public SensorBmeMessage(double temp, double rh, double pressure) {
+	public SensorBme(double temp, double rh, double pressure) {
 		this();
 		this.temp = temp;
 		this.rh = rh;

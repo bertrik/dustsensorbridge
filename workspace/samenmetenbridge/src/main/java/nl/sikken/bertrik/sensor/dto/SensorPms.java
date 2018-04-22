@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Triplet of three particulate concentrations.
  */
-public final class SensorPmTriplet {
+public final class SensorPms {
 
     @JsonProperty("pm1_0")
     private Double pm1_0;
@@ -18,7 +18,7 @@ public final class SensorPmTriplet {
     @JsonProperty("pm10")
     private Double pm10;
     
-    private SensorPmTriplet() {
+    private SensorPms() {
         // Jackson constructor
     }
     
@@ -29,7 +29,7 @@ public final class SensorPmTriplet {
      * @param pm2_5 PM2.5 concentration in ug/m3
      * @param pm10 PM10 concentration in ug/m3
      */
-    public SensorPmTriplet(Double pm1_0, Double pm2_5, Double pm10) {
+    public SensorPms(Double pm1_0, Double pm2_5, Double pm10) {
         this();
         this.pm1_0 = pm1_0;
         this.pm2_5 = pm2_5;
