@@ -129,7 +129,11 @@ public final class SamenMetenBridge {
             final SensorMessage message = mapper.readValue(textMessage, SensorMessage.class);
             
             // send payload telemetry data in the background (to avoid blocking the MQTT callback)
-            executor.submit(() -> uploadMeasurement(now, message));
+            if (message.getPms() != null) {
+            	executor.submit(() -> uploadMeasurement(now, message));
+            } else {
+            	LOG.warn("Ignoring message on topic '{}', no PMS data", topic);
+            }
         } catch (IOException e) {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
         }
