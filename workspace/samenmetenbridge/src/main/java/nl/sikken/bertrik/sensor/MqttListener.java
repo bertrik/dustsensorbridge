@@ -1,6 +1,9 @@
 package nl.sikken.bertrik.sensor;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -12,12 +15,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Listener process for receiving data from MQTT.
+ * 
+ * Decouples the MQTT callback from listener using a single thread executor. 
  */
 public final class MqttListener {
     
     private static final Logger LOG = LoggerFactory.getLogger(MqttListener.class);
     private static final long DISCONNECT_TIMEOUT_MS = 3000;
     
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final String clientId;
     private final IMessageReceived callback;
     private final String url;
@@ -67,10 +73,11 @@ public final class MqttListener {
      * @throws Exception who knows?
      */
     private void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+    	Instant now = Instant.now();
         final String message = new String(mqttMessage.getPayload(), StandardCharsets.US_ASCII);
         LOG.info("Message arrived on topic '{}': {}", topic, message);
-        // forward it to our user
-        callback.messageReceived(topic, message);
+        // forward it to our user on the executor
+        executor.submit(() -> callback.messageReceived(now, topic, message));
     }
     
     /**
@@ -78,6 +85,7 @@ public final class MqttListener {
      */
     public void stop() {
         LOG.info("Stopping MQTT listener");
+        executor.shutdown();
         try {
             mqttClient.disconnect(DISCONNECT_TIMEOUT_MS);
         } catch (MqttException e) {

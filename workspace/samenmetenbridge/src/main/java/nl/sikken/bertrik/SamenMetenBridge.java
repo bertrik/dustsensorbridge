@@ -8,8 +8,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
@@ -33,7 +31,6 @@ public final class SamenMetenBridge {
     private static final Logger LOG = LoggerFactory.getLogger(SamenMetenBridge.class);
     private static final String CONFIG_FILE = "samenmetenbridge.properties";
 
-	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 	private final ObjectMapper mapper = new ObjectMapper();
     private final MqttListener mqttListener;
     private final List<IUploader> uploaders = new ArrayList<>();
@@ -109,45 +106,37 @@ public final class SamenMetenBridge {
 	    LOG.info("Stopping SamenMeten bridge application");
 
 	    mqttListener.stop();
-	    executor.shutdown();
         uploaders.forEach(u -> u.stop());
 
 	    LOG.info("Stopped SamenMeten bridge application");
 	}
 
 	/**
-     * Handles an incoming MQTT message
+     * Handles an incoming MQTT message.
      * 
+     * This method is called in a thread separate from the MQTT thread so is allowed to take some time.
+     * 
+     * @param instant the time stamp of message reception
      * @param topic the topic on which the message was received
      * @param textMessage the message contents
      */
-    private void handleSensorMessage(String topic, String textMessage) {
+    private void handleSensorMessage(Instant instant, String topic, String textMessage) {
         try {
-        	final Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+        	final Instant now = instant.truncatedTo(ChronoUnit.SECONDS);
 
         	// decode from JSON
             final SensorMessage message = mapper.readValue(textMessage, SensorMessage.class);
             
             // send payload telemetry data in the background (to avoid blocking the MQTT callback)
             if (message.getPms() != null) {
-            	executor.submit(() -> uploadMeasurement(now, message));
+                for (IUploader uploader : uploaders) {
+                	uploader.uploadMeasurement(now, message);
+                }
             } else {
             	LOG.warn("Ignoring message on topic '{}', no PMS data", topic);
             }
         } catch (IOException e) {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
-        }
-    }
-    
-    /**
-     * Performs the actual uploads of sensor data sequentially in the background.
-     * 
-     * @param now the time stamp
-     * @param message the message
-     */
-    private void uploadMeasurement(Instant now, SensorMessage message) {
-        for (IUploader uploader : uploaders) {
-        	uploader.uploadMeasurement(now, message);
         }
     }
 
