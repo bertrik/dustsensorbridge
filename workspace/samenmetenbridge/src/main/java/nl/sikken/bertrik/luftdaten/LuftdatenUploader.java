@@ -67,9 +67,7 @@ public final class LuftdatenUploader implements IUploader {
 				new MultivaluedHashMap<String, Object>(headers), Collections.<Cookie> emptyList(), new Form());
 	}
 
-    /* (non-Javadoc)
-     * @see nl.sikken.bertrik.IUploader#uploadMeasurement(java.time.Instant, nl.sikken.bertrik.sensor.SensorMessage)
-     */
+	@Override
     public void uploadMeasurement(Instant now, SensorMessage message) {
     	LuftdatenMessage luftDatenMessage = new LuftdatenMessage(softwareVersion);
     	luftDatenMessage.addItem(new LuftdatenItem("P1", message.getPms().getPm10()));

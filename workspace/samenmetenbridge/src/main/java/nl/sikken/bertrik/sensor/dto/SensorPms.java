@@ -48,9 +48,7 @@ public final class SensorPms {
         return pm10;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
+    @Override
     public String toString() {
         return String.format(Locale.US, "{pm1_0=%.1f,pm2_5=%.1f,pm10=%.1f}", pm1_0, pm2_5, pm10);
     }

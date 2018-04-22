@@ -42,9 +42,6 @@ public final class SamenMetenUploader implements IUploader {
     	this.sensorInfo = sensorInfo;
     }
     
-    /* (non-Javadoc)
-	 * @see nl.sikken.bertrik.samenmeten.IUploader#start()
-	 */
 	@Override
 	public void start() {
         LOG.info("Starting SamenMeten Uploader");
@@ -52,18 +49,12 @@ public final class SamenMetenUploader implements IUploader {
         influxDB.enableBatch();
     }
     
-    /* (non-Javadoc)
-	 * @see nl.sikken.bertrik.samenmeten.IUploader#stop()
-	 */
 	@Override
 	public void stop() {
         LOG.info("Stopping SamenMeten Uploader");
         influxDB.close();
     }
 
-    /* (non-Javadoc)
-	 * @see nl.sikken.bertrik.samenmeten.IUploader#uploadMeasurement(nl.sikken.bertrik.sensor.SensorMessage, java.time.Instant)
-	 */
 	@Override
 	public void uploadMeasurement(Instant now, SensorMessage message) {
         LOG.info("uploadMeasurement({}, {})", message, now);
