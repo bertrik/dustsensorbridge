@@ -26,17 +26,29 @@ public final class SensorMessageTest {
 	}
 	
 	/**
-	 * Verifies that a JSON sensor message can be parsed.
+	 * Verifies that a JSON sensor message containing PMS7003 data can be parsed.
 	 * 
 	 * @throws IOException in case of a parsing error
 	 */
 	@Test
-//	@Ignore("not sure why test fails...")
 	public void testParse() throws IOException {
 		InputStream is = getClass().getClassLoader().getResourceAsStream("sensor_message.json");
 		ObjectMapper mapper = new ObjectMapper();
 		SensorMessage sensorMessage = mapper.readValue(is, SensorMessage.class);
 		Assert.assertNotNull(sensorMessage);
+	}
+	
+	/**
+	 * Verifies that a JSON message containing SDS011 data can be parsed.
+	 * @throws IOException
+	 */
+	@Test
+	public void testParseSds() throws IOException {
+		InputStream is = getClass().getClassLoader().getResourceAsStream("sensor_message_sds.json");
+		ObjectMapper mapper = new ObjectMapper();
+		SensorMessage sensorMessage = mapper.readValue(is, SensorMessage.class);
+		Assert.assertNotNull(sensorMessage);
+		Assert.assertNotNull(sensorMessage.getSds());
 	}
 	
 	/**
