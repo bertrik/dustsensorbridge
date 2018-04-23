@@ -141,7 +141,7 @@ public final class SamenMetenBridgeConfig implements ISamenMetenBridgeConfig {
 
 	@Override
 	public int getLuftdatenTimeout() {
-		return Integer.valueOf(props.get(EConfigItem.LUFTDATEN_TIMEOUT));
+		return Integer.parseInt(props.get(EConfigItem.LUFTDATEN_TIMEOUT));
 	}
 
 	@Override
