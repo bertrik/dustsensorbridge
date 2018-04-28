@@ -5,7 +5,7 @@ import nl.sikken.bertrik.config.BaseConfig;
 /**
  * Configuration class.
  */
-public final class SamenMetenBridgeConfig extends BaseConfig implements ISamenMetenBridgeConfig {
+public final class DustSensorBridgeConfig extends BaseConfig implements IDustSensorBridgeConfig {
     
 	private enum EConfigItem {
         SENSOR_LAT("sensor.lat", "52.02264", "Sensor latitude"),
@@ -36,7 +36,7 @@ public final class SamenMetenBridgeConfig extends BaseConfig implements ISamenMe
     /**
      * Constructor.
      */
-    public SamenMetenBridgeConfig() {
+    public DustSensorBridgeConfig() {
         for (EConfigItem e : EConfigItem.values()) {
             add(e.key, e.value, e.comment);
         }

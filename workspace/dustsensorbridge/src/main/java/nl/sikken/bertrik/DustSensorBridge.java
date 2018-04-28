@@ -26,10 +26,10 @@ import nl.sikken.bertrik.sensor.dto.SensorMessage;
  * Bridge between the-things-network and the habhub network.
  * 
  */
-public final class SamenMetenBridge {
+public final class DustSensorBridge {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SamenMetenBridge.class);
-    private static final String CONFIG_FILE = "samenmetenbridge.properties";
+    private static final Logger LOG = LoggerFactory.getLogger(DustSensorBridge.class);
+    private static final String CONFIG_FILE = "dustsensorbridge.properties";
 
 	private final ObjectMapper mapper = new ObjectMapper();
     private final MqttListener mqttListener;
@@ -43,8 +43,8 @@ public final class SamenMetenBridge {
      * @throws MqttException in case of a problem starting MQTT client
      */
     public static void main(String[] arguments) throws IOException, MqttException {
-        final ISamenMetenBridgeConfig config = readConfig(new File(CONFIG_FILE));
-        final SamenMetenBridge app = new SamenMetenBridge(config);
+        final IDustSensorBridgeConfig config = readConfig(new File(CONFIG_FILE));
+        final DustSensorBridge app = new DustSensorBridge(config);
 
         Thread.setDefaultUncaughtExceptionHandler(app::handleUncaughtException);
 
@@ -57,7 +57,7 @@ public final class SamenMetenBridge {
      * 
      * @param config the application configuration
      */
-    private SamenMetenBridge(ISamenMetenBridgeConfig config) {
+    private DustSensorBridge(IDustSensorBridgeConfig config) {
         this.mqttListener = new MqttListener(this::handleSensorMessage, config.getMqttUrl(), config.getMqttTopic());
         
         // general sensor info 
@@ -89,13 +89,13 @@ public final class SamenMetenBridge {
      * @throws MqttException in case of a problem starting MQTT client
      */
     private void start() throws MqttException {
-        LOG.info("Starting SamenMeten bridge application");
+        LOG.info("Starting DustSensor bridge application");
 
         // start sub-modules
         uploaders.forEach(u -> u.start());
         mqttListener.start();
 
-        LOG.info("Started SamenMeten bridge application");
+        LOG.info("Started DustSensor bridge application");
     }
 
     /**
@@ -104,12 +104,12 @@ public final class SamenMetenBridge {
 	 * @throws MqttException
 	 */
 	private void stop() {
-	    LOG.info("Stopping SamenMeten bridge application");
+	    LOG.info("Stopping DustSensor bridge application");
 
 	    mqttListener.stop();
         uploaders.forEach(u -> u.stop());
 
-	    LOG.info("Stopped SamenMeten bridge application");
+	    LOG.info("Stopped DustSensor bridge application");
 	}
 
 	/**
@@ -152,8 +152,8 @@ public final class SamenMetenBridge {
         stop();
     }
     
-    private static ISamenMetenBridgeConfig readConfig(File file) throws IOException {
-        final SamenMetenBridgeConfig config = new SamenMetenBridgeConfig();
+    private static IDustSensorBridgeConfig readConfig(File file) throws IOException {
+        final DustSensorBridgeConfig config = new DustSensorBridgeConfig();
         try (FileInputStream fis = new FileInputStream(file)) {
             config.load(fis);
         } catch (IOException e) {

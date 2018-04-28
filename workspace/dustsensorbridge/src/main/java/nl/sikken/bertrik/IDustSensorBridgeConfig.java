@@ -3,7 +3,7 @@ package nl.sikken.bertrik;
 /**
  * Configuration interface for the application.
  */
-public interface ISamenMetenBridgeConfig {
+public interface IDustSensorBridgeConfig {
 
     /**
      * @return the sensor latitude
