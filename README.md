@@ -31,7 +31,6 @@ It contains (at the moment of writing this), the following options:
 * samenmeten.user: the samenmeten influx database user name
 * samenmeten.pass: the samenmeten influx database password
 * luftdaten.url: the URL of the luftdaten HTTP API, e.g. https://api.luftdaten.info
-* luftdaten.id: the unique id of the sensor, e.g. esp8266-123456
 * luftdaten.timeout: the timeout (ms) for accessing the luftdaten API, e.g 3000
 * luftdaten.version: the version string for accessing the luftdaten API, e.g. "0.1"
 
