@@ -58,7 +58,7 @@ public final class SensorBme {
 
 	@Override
 	public String toString() {
-		return String.format(Locale.US, "{t=%f,rh=%f,p=%f}", temp, rh, pressure);
+		return String.format(Locale.US, "{t=%.1f,rh=%.1f,p=%.1f}", temp, rh, pressure);
 	}
 	
 }
