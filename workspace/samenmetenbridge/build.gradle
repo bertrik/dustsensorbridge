@@ -9,8 +9,7 @@ dependencies {
     compile libraries.jackson
     compile libraries.influxdb_java
     
-    compile libraries.jersey_client
-    compile libraries.jersey_media_json_jackson
+    compile libraries.retrofit    
 }
 
 //Add configuration folder to classpath:

@@ -1,23 +1,18 @@
 package nl.sikken.bertrik.luftdaten;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import nl.sikken.bertrik.luftdaten.dto.LuftdatenMessage;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
 
 /**
  * REST API for luftdaten.info
  */
-@Path("/v1")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
 public interface ILuftdatenApi {
 
-	@Path("/push-sensor-data/")
-	@POST
-	String pushSensorData(LuftdatenMessage message);
+	@POST("/v1/push-sensor-data/")
+	Call<String> pushSensorData(
+			@Header("X-Pin") String pin, @Header("X-Sensor") String sensor, @Body LuftdatenMessage message);
 	
 }

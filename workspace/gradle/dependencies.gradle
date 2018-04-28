@@ -9,16 +9,11 @@ libraries.jackson = [
     'com.fasterxml.jackson.core:jackson-databind:2.8.4'
 ]
 
-libraries.jersey_client = [
-    'org.glassfish.jersey.core:jersey-client:2.26',
-    'org.glassfish.jersey.ext:jersey-proxy-client:2.26',
-    'org.glassfish.jersey.inject:jersey-hk2:2.26'
+libraries.retrofit = [
+    'com.squareup.retrofit2:retrofit:2.4.0',
+    'com.squareup.retrofit2:converter-jackson:2.4.0',
+    'com.squareup.retrofit2:converter-scalars:2.4.0'
 ]
-
-libraries.jersey_media_json_jackson = [
-    'org.glassfish.jersey.media:jersey-media-json-jackson:2.26'
-]
-
 
 libraries.mqtt_client = 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0' 
 libraries.influxdb_java = 'org.influxdb:influxdb-java:2.9'

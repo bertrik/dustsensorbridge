@@ -75,9 +75,10 @@ public final class SamenMetenBridge {
         // luftdaten.info
         if (!config.getLuftdatenUrl().isEmpty()) {
         	LOG.info("Adding Luftdaten uploader");
-	        ILuftdatenApi luftDatenApi = LuftdatenUploader.newRestClient(config.getLuftdatenUrl(), 
-	        		config.getLuftdatenTimeout(), "1", config.getLuftdatenId());
-	        IUploader luftDatenUploader = new LuftdatenUploader(luftDatenApi, config.getLuftdatenVersion());
+	        ILuftdatenApi luftDatenApi = 
+	        		LuftdatenUploader.newRestClient(config.getLuftdatenUrl(), config.getLuftdatenTimeout());
+	        IUploader luftDatenUploader = 
+	        		new LuftdatenUploader(luftDatenApi, config.getLuftdatenVersion(), "1", config.getLuftdatenId());
 	        uploaders.add(luftDatenUploader);
         }
     }
