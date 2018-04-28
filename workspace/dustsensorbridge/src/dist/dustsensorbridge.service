@@ -1,14 +1,14 @@
 # copy this to /etc/systemd/system
 # then sudo systemctl daemon-reload
-# and enable with sudo systemctl enable --now samenmeten
+# and enable with sudo systemctl enable --now dustsensorbridge
 
 [Unit]
-Description=samenmeten
+Description=dustsensorbridge
 After=network.target
 
 [Service]
-WorkingDirectory=/home/bertrik/samenmetenbridge
-ExecStart=/home/bertrik/samenmetenbridge/bin/samenmetenbridge
+WorkingDirectory=/home/bertrik/dustsensorbridge
+ExecStart=/home/bertrik/dustsensorbridge/bin/dustsensorbridge
 Type=simple
 KillMode=process
 Restart=on-failure
