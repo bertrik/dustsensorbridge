@@ -23,8 +23,9 @@ public interface IUploader {
 	 * Uploads a sensor measurement.
 	 * 
 	 * @param now the current time
+	 * @param sensorId the sensor id
 	 * @param message the sensor measurement
 	 */
-	void uploadMeasurement(Instant now, SensorMessage message);
+	void uploadMeasurement(Instant now, int sensorId, SensorMessage message);
 
 }

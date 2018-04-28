@@ -2,6 +2,7 @@ package nl.sikken.bertrik.luftdaten;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -26,11 +27,12 @@ public final class LuftdatenUploader implements IUploader {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(LuftdatenUploader.class);
 	
+	// the "PIN" we upload dust data to
+	private static final String PIN = "1";
+
 	private final ObjectMapper mapper = new ObjectMapper();
 	private final ILuftdatenApi restClient;
 	private final String softwareVersion;
-	private final String pin;
-	private final String sensorId;
 
 	/**
 	 * Constructor.
@@ -38,11 +40,9 @@ public final class LuftdatenUploader implements IUploader {
 	 * @param restClient the REST client
 	 * @param softwareVersion the software version
 	 */
-	public LuftdatenUploader(ILuftdatenApi restClient, String softwareVersion, String pin, String sensorId) {
+	public LuftdatenUploader(ILuftdatenApi restClient, String softwareVersion) {
 		this.restClient = restClient;
 		this.softwareVersion = softwareVersion;
-		this.pin = pin;
-		this.sensorId = sensorId;
 	}
 	
 	/**
@@ -69,13 +69,14 @@ public final class LuftdatenUploader implements IUploader {
 	}
 	
 	@Override
-    public void uploadMeasurement(Instant now, SensorMessage message) {
+    public void uploadMeasurement(Instant now, int sensorId, SensorMessage message) {
     	LuftdatenMessage luftDatenMessage = new LuftdatenMessage(softwareVersion);
     	luftDatenMessage.addItem(new LuftdatenItem("P1", message.getPms().getPm10()));
     	luftDatenMessage.addItem(new LuftdatenItem("P2", message.getPms().getPm2_5()));
+    	String sensor = String.format(Locale.US, "esp8266-%d", sensorId);
     	try {
-    		LOG.info("Sending luftdaten.info message '{}'", mapper.writeValueAsString(luftDatenMessage));
-    		Response<String> response = restClient.pushSensorData(pin, sensorId, luftDatenMessage).execute();
+    		LOG.info("Sending for {} to pin {}: '{}'", sensor, PIN, mapper.writeValueAsString(luftDatenMessage));
+    		Response<String> response = restClient.pushSensorData(PIN, sensor, luftDatenMessage).execute();
     		if (response.isSuccessful()) {
     			LOG.info("Result success: {}", response.body());
     		} else {

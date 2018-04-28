@@ -19,6 +19,7 @@ import nl.sikken.bertrik.luftdaten.ILuftdatenApi;
 import nl.sikken.bertrik.luftdaten.LuftdatenUploader;
 import nl.sikken.bertrik.samenmeten.SamenMetenUploader;
 import nl.sikken.bertrik.sensor.MqttListener;
+import nl.sikken.bertrik.sensor.MqttTopicParser;
 import nl.sikken.bertrik.sensor.SensorInfo;
 import nl.sikken.bertrik.sensor.dto.SensorMessage;
 
@@ -77,8 +78,7 @@ public final class DustSensorBridge {
         	LOG.info("Adding Luftdaten uploader");
 	        ILuftdatenApi luftDatenApi = 
 	        		LuftdatenUploader.newRestClient(config.getLuftdatenUrl(), config.getLuftdatenTimeout());
-	        IUploader luftDatenUploader = 
-	        		new LuftdatenUploader(luftDatenApi, config.getLuftdatenVersion(), "1", config.getLuftdatenId());
+	        IUploader luftDatenUploader = new LuftdatenUploader(luftDatenApi, config.getLuftdatenVersion());
 	        uploaders.add(luftDatenUploader);
         }
     }
@@ -121,17 +121,27 @@ public final class DustSensorBridge {
      * @param topic the topic on which the message was received
      * @param textMessage the message contents
      */
-    private void handleSensorMessage(Instant instant, String topic, String textMessage) {
-        try {
-        	final Instant now = instant.truncatedTo(ChronoUnit.SECONDS);
+    void handleSensorMessage(Instant instant, String topic, String textMessage) {
+    	final Instant now = instant.truncatedTo(ChronoUnit.SECONDS);
 
-        	// decode from JSON
-            final SensorMessage message = mapper.readValue(textMessage, SensorMessage.class);
+    	// decode topic
+    	int sensorId;
+    	try {
+    		MqttTopicParser topicParser = new MqttTopicParser(topic);
+    		sensorId = Integer.parseInt(topicParser.getLast(), 16);
+    	} catch (NumberFormatException e) {
+    		LOG.warn("Could not parse topic '{}'", topic);
+    		return;
+    	}
+
+    	// decode message from JSON
+    	try {
+            SensorMessage message = mapper.readValue(textMessage, SensorMessage.class);
             
             // send payload telemetry data in the background (to avoid blocking the MQTT callback)
             if (message.getPms() != null) {
                 for (IUploader uploader : uploaders) {
-                	uploader.uploadMeasurement(now, message);
+                	uploader.uploadMeasurement(now, sensorId, message);
                 }
             } else {
             	LOG.warn("Ignoring message on topic '{}', no PMS data", topic);

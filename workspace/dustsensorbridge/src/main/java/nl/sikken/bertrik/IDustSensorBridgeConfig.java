@@ -45,9 +45,19 @@ public interface IDustSensorBridgeConfig {
      */
     String getSamenMetenPassword();
 
+	/**
+	 * @return the URL of the luftdaten.info API
+	 */
 	String getLuftdatenUrl();
+	
+	/**
+	 * @return timeout (ms) for accessing the luftdaten.info API
+	 */
 	int getLuftdatenTimeout();
-	String getLuftdatenId();
+	
+	/**
+	 * @return the version we report to the luftdaten.info API
+	 */
 	String getLuftdatenVersion();
 
 }

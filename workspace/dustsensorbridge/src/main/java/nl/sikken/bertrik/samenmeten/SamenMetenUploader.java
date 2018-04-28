@@ -56,7 +56,7 @@ public final class SamenMetenUploader implements IUploader {
     }
 
 	@Override
-	public void uploadMeasurement(Instant now, SensorMessage message) {
+	public void uploadMeasurement(Instant now, int sensorId, SensorMessage message) {
         LOG.info("uploadMeasurement({}, {})", message, now);
 
         // calculate timestamp

@@ -20,7 +20,6 @@ public final class DustSensorBridgeConfig extends BaseConfig implements IDustSen
         SAMENMETEN_PASS("samenmeten.pass", "", "Password for the samenmeten server"),
         
         LUFTDATEN_URL("luftdaten.url", "https://api.luftdaten.info", "luftdaten server URL (empty to disable)"),
-        LUFTDATEN_ID("luftdaten.id", "esp8266-xxxxxx", "luftdaten sensor id"),
         LUFTDATEN_TIMEOUT("luftdaten.timeout", "3000", "luftdaten timeout"),
         LUFTDATEN_VERSION("luftdaten.version", "0.1", "luftdaten uploader version");
 		
@@ -90,11 +89,6 @@ public final class DustSensorBridgeConfig extends BaseConfig implements IDustSen
 	@Override
 	public int getLuftdatenTimeout() {
 		return Integer.parseInt(get(EConfigItem.LUFTDATEN_TIMEOUT.key));
-	}
-
-	@Override
-	public String getLuftdatenId() {
-		return get(EConfigItem.LUFTDATEN_ID.key);
 	}
 
 	@Override

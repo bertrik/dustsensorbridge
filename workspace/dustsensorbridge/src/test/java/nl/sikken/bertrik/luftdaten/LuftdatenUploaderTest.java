@@ -33,11 +33,11 @@ public final class LuftdatenUploaderTest {
 		Call<String> call = Mockito.mock(Call.class);
 		Mockito.when(call.execute()).thenReturn(Response.success("OK"));
 		Mockito.when(api.pushSensorData(Mockito.eq("1"), Mockito.any(), Mockito.any())).thenReturn(call);
-		LuftdatenUploader uploader = new LuftdatenUploader(api, "0.0", "1", "123456");
+		LuftdatenUploader uploader = new LuftdatenUploader(api, "0.0");
 
 		SensorMessage message = 
 				new SensorMessage(new SensorPms(0.0, 2.5, 10.0), new SensorBme(0.0, 0, 1000.0));
-		uploader.uploadMeasurement(Instant.now(), message);
+		uploader.uploadMeasurement(Instant.now(), 0, message);
 		
 		ArgumentCaptor<LuftdatenMessage> captor = ArgumentCaptor.forClass(LuftdatenMessage.class);
 		Mockito.verify(api, Mockito.timeout(3000)).pushSensorData(Mockito.eq("1"), Mockito.any(), captor.capture());
