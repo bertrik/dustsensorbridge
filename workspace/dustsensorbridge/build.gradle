@@ -9,7 +9,8 @@ dependencies {
     compile libraries.jackson
     compile libraries.influxdb_java
     
-    compile libraries.retrofit    
+    compile libraries.retrofit
+    testCompile libraries.retrofit_mock
 }
 
 //Add configuration folder to classpath:

@@ -12,8 +12,7 @@ import nl.sikken.bertrik.luftdaten.dto.LuftdatenMessage;
 import nl.sikken.bertrik.sensor.dto.SensorBme;
 import nl.sikken.bertrik.sensor.dto.SensorMessage;
 import nl.sikken.bertrik.sensor.dto.SensorPms;
-import retrofit2.Call;
-import retrofit2.Response;
+import retrofit2.mock.Calls;
 
 /**
  * Unit tests of LuftdatenUploader.
@@ -29,10 +28,8 @@ public final class LuftdatenUploaderTest {
 		// create mock
 		ILuftdatenApi api = Mockito.mock(ILuftdatenApi.class);
 
-		@SuppressWarnings("unchecked")
-		Call<String> call = Mockito.mock(Call.class);
-		Mockito.when(call.execute()).thenReturn(Response.success("OK"));
-		Mockito.when(api.pushSensorData(Mockito.eq("1"), Mockito.any(), Mockito.any())).thenReturn(call);
+		Mockito.when(api.pushSensorData(Mockito.eq("1"), Mockito.any(), Mockito.any()))
+				.thenReturn(Calls.response("OK"));
 		LuftdatenUploader uploader = new LuftdatenUploader(api, "0.0");
 
 		SensorMessage message = 
