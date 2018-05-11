@@ -11,6 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class SensorMessage {
 
+	@JsonProperty("alive")
+	private int alive;
+	
     @JsonProperty("pms7003")
     private SensorPms pms;
     
@@ -36,6 +39,10 @@ public final class SensorMessage {
         this.bme = bme;
     }
     
+    public int getAlive() {
+    	return alive;
+    }
+    
     public SensorPms getPms() {
         return pms;
     }
@@ -50,7 +57,7 @@ public final class SensorMessage {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "{pms=%s,sds=%s,bme=%s}", pms, sds, bme);
+        return String.format(Locale.US, "{alive=%d,pms=%s,sds=%s,bme=%s}", alive, pms, sds, bme);
     }
     
 }
