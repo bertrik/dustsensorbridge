@@ -10,11 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class SensorBme {
 
 	@JsonProperty("t")
-	private double temp;
+	private Double temp;
 	@JsonProperty("rh")
-	private double rh;
+	private Double rh;
 	@JsonProperty("p")
-	private double pressure;
+	private Double pressure;
 
 	private SensorBme() {
 		// jackson constructor
@@ -32,28 +32,28 @@ public final class SensorBme {
 		this.pressure = pressure;
 	}
 
-	public double getTemp() {
+	public Double getTemp() {
 		return temp;
 	}
 
-	public double getRh() {
+	public Double getRh() {
 		return rh;
 	}
 
-	public double getPressure() {
+	public Double getPressure() {
 		return pressure;
 	}
 
 	public boolean hasValidTemp() {
-		return (temp > -100.0) && (temp < 100.0);
+		return (temp != null) && (temp > -100.0) && (temp < 100.0);
 	}
 
 	public boolean hasValidRh() {
-		return (rh >= 0) && (rh <= 100.0);
+		return (rh != null) && (rh >= 0) && (rh <= 100.0);
 	}
 
 	public boolean hasValidPressure() {
-		return (pressure > 800.0) && (pressure < 1200.0);
+		return (pressure != null) && (pressure > 800.0) && (pressure < 1200.0);
 	}
 
 	@Override
