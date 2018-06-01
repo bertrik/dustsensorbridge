@@ -80,7 +80,7 @@ public final class LuftdatenUploader implements IUploader {
     		if (response.isSuccessful()) {
     			LOG.info("Result success: {}", response.body());
     		} else {
-    			LOG.warn("Request failed: {}", response.errorBody());
+    			LOG.warn("Request failed: {}", response.message());
     		}
     	} catch (IOException e) {
     		LOG.warn("Caught exception '{}'", e.getMessage());
