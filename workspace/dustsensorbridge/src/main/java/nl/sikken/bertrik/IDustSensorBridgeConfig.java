@@ -56,6 +56,11 @@ public interface IDustSensorBridgeConfig {
 	int getLuftdatenTimeout();
 	
 	/**
+	 * @return the luftdaten id to send to luftdaten info (empty to use the MQTT topic)
+	 */
+	String getLuftdatenIdOverride();
+	
+	/**
 	 * @return the version we report to the luftdaten.info API
 	 */
 	String getLuftdatenVersion();

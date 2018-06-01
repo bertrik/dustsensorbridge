@@ -78,7 +78,8 @@ public final class DustSensorBridge {
         	LOG.info("Adding Luftdaten uploader");
 	        ILuftdatenApi luftDatenApi = 
 	        		LuftdatenUploader.newRestClient(config.getLuftdatenUrl(), config.getLuftdatenTimeout());
-	        IUploader luftDatenUploader = new LuftdatenUploader(luftDatenApi, config.getLuftdatenVersion());
+			IUploader luftDatenUploader = new LuftdatenUploader(luftDatenApi, config.getLuftdatenVersion(),
+					config.getLuftdatenIdOverride());
 	        uploaders.add(luftDatenUploader);
         }
     }

@@ -33,16 +33,19 @@ public final class LuftdatenUploader implements IUploader {
 	private final ObjectMapper mapper = new ObjectMapper();
 	private final ILuftdatenApi restClient;
 	private final String softwareVersion;
+	private final String sensorIdOverride;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param restClient the REST client
 	 * @param softwareVersion the software version
+	 * @param sensorIdOverride the sensor id override (empty means automatic sensor id)
 	 */
-	public LuftdatenUploader(ILuftdatenApi restClient, String softwareVersion) {
+	public LuftdatenUploader(ILuftdatenApi restClient, String softwareVersion, String sensorIdOverride) {
 		this.restClient = restClient;
 		this.softwareVersion = softwareVersion;
+		this.sensorIdOverride = sensorIdOverride;
 	}
 	
 	/**
@@ -73,7 +76,12 @@ public final class LuftdatenUploader implements IUploader {
     	LuftdatenMessage luftDatenMessage = new LuftdatenMessage(softwareVersion);
     	luftDatenMessage.addItem(new LuftdatenItem("P1", message.getPms().getPm10()));
     	luftDatenMessage.addItem(new LuftdatenItem("P2", message.getPms().getPm2_5()));
-    	String sensor = String.format(Locale.US, "esp8266-%d", sensorId);
+    	String sensor;
+    	if (!sensorIdOverride.isEmpty()) {
+    		sensor = sensorIdOverride; 
+    	} else {
+    		sensor = String.format(Locale.US, "esp8266-%d", sensorId);
+    	}
     	try {
     		LOG.info("Sending for {} to pin {}: '{}'", sensor, PIN, mapper.writeValueAsString(luftDatenMessage));
     		Response<String> response = restClient.pushSensorData(PIN, sensor, luftDatenMessage).execute();
