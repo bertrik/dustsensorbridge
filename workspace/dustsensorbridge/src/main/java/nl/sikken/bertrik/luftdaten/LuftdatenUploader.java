@@ -76,6 +76,7 @@ public final class LuftdatenUploader implements IUploader {
     	LuftdatenMessage luftDatenMessage = new LuftdatenMessage(softwareVersion);
     	luftDatenMessage.addItem(new LuftdatenItem("P1", message.getPms().getPm10()));
     	luftDatenMessage.addItem(new LuftdatenItem("P2", message.getPms().getPm2_5()));
+    	luftDatenMessage.addItem(new LuftdatenItem("P0", message.getPms().getPm1_0()));
     	String sensor;
     	if (!sensorIdOverride.isEmpty()) {
     		sensor = sensorIdOverride; 
