@@ -21,8 +21,7 @@ public final class DustSensorBridgeConfig extends BaseConfig implements IDustSen
         
         LUFTDATEN_URL("luftdaten.url", "https://api.luftdaten.info", "luftdaten server URL (empty to disable)"),
         LUFTDATEN_TIMEOUT("luftdaten.timeout", "3000", "luftdaten timeout"),
-        LUFTDATEN_ID("luftdaten.id", "", "luftdaten sensor id (empty for automatic)"),
-        LUFTDATEN_VERSION("luftdaten.version", "0.1", "luftdaten uploader version");
+        LUFTDATEN_ID("luftdaten.id", "", "luftdaten sensor id (empty for automatic)");
 		
 		private final String key, value, comment;
 		
@@ -95,11 +94,6 @@ public final class DustSensorBridgeConfig extends BaseConfig implements IDustSen
 	@Override
 	public String getLuftdatenIdOverride() {
 		return get(EConfigItem.LUFTDATEN_ID.key).trim();
-	}
-
-	@Override
-	public String getLuftdatenVersion() {
-		return get(EConfigItem.LUFTDATEN_VERSION.key);
 	}
     
 }

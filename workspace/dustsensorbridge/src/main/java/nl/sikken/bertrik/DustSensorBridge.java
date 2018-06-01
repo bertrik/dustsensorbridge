@@ -31,6 +31,7 @@ public final class DustSensorBridge {
 
     private static final Logger LOG = LoggerFactory.getLogger(DustSensorBridge.class);
     private static final String CONFIG_FILE = "dustsensorbridge.properties";
+	private static final String SOFTWARE_VERSION = "0.2";
 
 	private final ObjectMapper mapper = new ObjectMapper();
     private final MqttListener mqttListener;
@@ -78,7 +79,7 @@ public final class DustSensorBridge {
         	LOG.info("Adding Luftdaten uploader");
 	        ILuftdatenApi luftDatenApi = 
 	        		LuftdatenUploader.newRestClient(config.getLuftdatenUrl(), config.getLuftdatenTimeout());
-			IUploader luftDatenUploader = new LuftdatenUploader(luftDatenApi, config.getLuftdatenVersion(),
+			IUploader luftDatenUploader = new LuftdatenUploader(luftDatenApi, SOFTWARE_VERSION,
 					config.getLuftdatenIdOverride());
 	        uploaders.add(luftDatenUploader);
         }

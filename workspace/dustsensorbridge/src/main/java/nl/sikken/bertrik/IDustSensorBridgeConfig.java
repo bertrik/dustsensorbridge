@@ -60,9 +60,4 @@ public interface IDustSensorBridgeConfig {
 	 */
 	String getLuftdatenIdOverride();
 	
-	/**
-	 * @return the version we report to the luftdaten.info API
-	 */
-	String getLuftdatenVersion();
-
 }
