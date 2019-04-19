@@ -16,7 +16,7 @@ libraries.retrofit = [
 ]
 libraries.retrofit_mock = 'com.squareup.retrofit2:retrofit-mock:2.5.0'
 
-libraries.mqtt_client = 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0' 
+libraries.mqtt_client = 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.1' 
 libraries.influxdb_java = 'org.influxdb:influxdb-java:2.15'
 
 // test libraries
