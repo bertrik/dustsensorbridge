@@ -7,16 +7,16 @@ https://revspace.nl/DustSensor
 # Building
 ## Linux
 To build under Linux:
-* install a jdk8 and the gradle tool (e.g. using your package manager)
-* cd into directory workspace/gradle
+* install openjdk8 or openjdk11 and the gradle tool (e.g. using your package manager)
+* cd into directory gradle
 * run 'gradle distTar'
-* under directory workspace/dustsensorbridge/build/distributions you can find the installation .tar 
+* under directory dustsensorbridge/build/distributions you can find the installation .tar 
 ## Windows
 To build under windows:
 * install a JDK8 in directory tools
-* cd into directory workspace/gradle
+* cd into directory gradle
 * run 'gradlew distZip'
-* under directory workspace/dustsensorbridge/build/distributions you can find the installation .zip
+* under directory dustsensorbridge/build/distributions you can find the installation .zip
 
 # Configuring
 Configuration options are stored in the file dustsensorbridge.properties
