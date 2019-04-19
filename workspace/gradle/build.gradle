@@ -9,10 +9,9 @@ subprojects {
     apply plugin: "java"
     apply plugin: "eclipse"
     apply plugin: "pmd"
-    apply plugin: "findbugs"
     
     targetCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 1.8
 
     repositories {
         mavenCentral()
@@ -22,13 +21,6 @@ subprojects {
         toolVersion = "5.8.1"
     }
     
-    findbugsMain {
-        reports {
-            xml.enabled = false
-            html.enabled = true
-        }
-    }    
-
     // Standard libraries added to all projects
     dependencies {
         testCompile libraries.junit
